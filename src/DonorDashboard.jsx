@@ -8,7 +8,9 @@ export default function DonorDashboard({ donorId, donorName }) {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:8080/ws-blood-donation");
+    const socket = new SockJS(
+      "https://pulsenode-backend.onrender.com/ws-blood-donation",
+    );
     const stompClient = new Client({
       webSocketFactory: () => socket,
       onConnect: () => {
@@ -33,7 +35,7 @@ export default function DonorDashboard({ donorId, donorName }) {
   const handleAccept = async (requestId) => {
     try {
       await axios.post(
-        `http://localhost:8080/api/requests/${requestId}/responses`,
+        `https://pulsenode-backend.onrender.com/api/requests/${requestId}/responses`,
         {
           donorId: donorId,
           answer: "accept",

@@ -18,15 +18,18 @@ export default function SubmitRequest({ requesterId, onBack }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/requests", {
-        requester: { requesterId: requesterId }, // Links to the logged-in hospital[cite: 3]
-        bloodTypeNeeded: bloodType,
-        unitsNeeded: parseInt(units),
-        location: location,
-        urgencyLevel: urgency,
-        latitude: 12.9716, // Hardcoded coordinates for the prototype's 10km radius logic
-        longitude: 77.5946,
-      });
+      const response = await axios.post(
+        "https://pulsenode-backend.onrender.com/api/requests",
+        {
+          requester: { requesterId: requesterId }, // Links to the logged-in hospital[cite: 3]
+          bloodTypeNeeded: bloodType,
+          unitsNeeded: parseInt(units),
+          location: location,
+          urgencyLevel: urgency,
+          latitude: 12.9716, // Hardcoded coordinates for the prototype's 10km radius logic
+          longitude: 77.5946,
+        },
+      );
 
       // Capture the new request ID and transition to the live dashboard
       setActiveRequestId(response.data.requestId);

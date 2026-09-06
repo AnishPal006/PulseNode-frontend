@@ -15,7 +15,9 @@ export default function HospitalDashboard({
   const [matchMessage, setMatchMessage] = useState("");
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:8080/ws-blood-donation");
+    const socket = new SockJS(
+      "https://pulsenode-backend.onrender.com/ws-blood-donation",
+    );
     const stompClient = new Client({
       webSocketFactory: () => socket,
       onConnect: () => {

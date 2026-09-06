@@ -26,7 +26,7 @@ export default function App() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        "https://pulsenode-backend.onrender.com/api/auth/login",
         {
           email: email,
           password: password, // <-- Sends password to backend

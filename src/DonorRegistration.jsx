@@ -18,18 +18,21 @@ export default function DonorRegistration({ onRegisterSuccess, onCancel }) {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8080/api/donors", {
-        name: formData.name,
-        contactEmail: formData.email,
-        contactPhone: formData.phone,
-        bloodType: formData.bloodType,
-        password: formData.password,
-        // Hardcoding location and verification for the prototype demo
-        latitude: 12.972,
-        longitude: 77.595,
-        verificationStatus: "verified",
-        lastDonationDate: "2025-01-01T10:00:00",
-      });
+      const response = await axios.post(
+        "https://pulsenode-backend.onrender.com/api/donors",
+        {
+          name: formData.name,
+          contactEmail: formData.email,
+          contactPhone: formData.phone,
+          bloodType: formData.bloodType,
+          password: formData.password,
+          // Hardcoding location and verification for the prototype demo
+          latitude: 12.972,
+          longitude: 77.595,
+          verificationStatus: "verified",
+          lastDonationDate: "2025-01-01T10:00:00",
+        },
+      );
 
       // Instantly logs them in and routes to the dashboard
       onRegisterSuccess(response.data.donorId);

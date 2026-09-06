@@ -18,7 +18,7 @@ export default function HospitalRegistration({ onRegisterSuccess, onCancel }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/requesters",
+        "https://pulsenode-backend.onrender.com/api/requesters",
         {
           name: formData.name,
           contactEmail: formData.email,
