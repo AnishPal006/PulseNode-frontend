@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config';
+import { API_BASE_URL } from "./config";
 import { useState } from "react";
 import axios from "axios";
 import DonorDashboard from "./DonorDashboard";
@@ -30,14 +30,11 @@ export default function App() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/api/auth/login`,
-        {
-          email: adminEmail,
-          password: adminPassword,
-          role: "admin",
-        },
-      );
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+        email: adminEmail,
+        password: adminPassword,
+        role: "admin",
+      });
 
       if (response.data.role === "admin") {
         setCurrentView("admin");
@@ -154,7 +151,18 @@ export default function App() {
         </div>
 
         {/* Right Side: Login Panel */}
-        <div className="w-full lg:w-[45%] flex items-center justify-center p-4 md:p-8 bg-zinc-50 relative">
+        <div className="w-full lg:w-[45%] flex flex-col items-center justify-center p-4 md:p-8 bg-zinc-50 relative overflow-y-auto">
+          
+          {/* Mobile Hero (Hidden on Desktop) */}
+          <div className="lg:hidden text-center mb-8 mt-4 w-full px-4">
+            <h1 className="text-4xl font-extrabold tracking-tighter mb-2">
+              PulseNode <span className="text-rose-500">Network</span>
+            </h1>
+            <p className="text-zinc-500 font-medium text-sm">
+              Connecting hospitals with eligible donors instantly.
+            </p>
+          </div>
+
           <div className="max-w-md w-full bg-white rounded-[40px] shadow-2xl p-6 md:p-12 border border-zinc-100 relative z-10">
             <div className="text-center mb-12">
               <div className="w-20 h-20 bg-zinc-900 text-white rounded-[28px] flex items-center justify-center mx-auto mb-8 text-3xl shadow-xl shadow-zinc-900/20">

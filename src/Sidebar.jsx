@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Home, Activity, FileText, Users, LogOut, X } from "lucide-react";
+import { Home, Activity, FileText, Users, LogOut, X, Building } from "lucide-react";
 
 export default function Sidebar({ role, onLogout, activeTab, setActiveTab }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
