@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config';
+import { API_BASE_URL } from "./config";
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -46,7 +46,11 @@ export default function CompleteProfile({ tempUser, onComplete }) {
         onComplete(newId, tempUser.role, tempUser.name);
       } catch (err) {
         console.error("Failed to complete profile", err);
-        const detail = err.response?.data || err.message; alert("Failed to complete profile. Server says: " + (typeof detail === "object" ? JSON.stringify(detail) : detail));
+        const detail = err.response?.data || err.message;
+        alert(
+          "Failed to complete profile. Server says: " +
+            (typeof detail === "object" ? JSON.stringify(detail) : detail),
+        );
       } finally {
         setLoading(false);
       }

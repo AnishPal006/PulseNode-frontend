@@ -265,29 +265,29 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
               <div className="space-y-4">
                 {alerts.map((alert, index) => (
                   <div
-                    key={index}
-                    className="bg-rose-50 border border-rose-100 p-6 rounded-3xl flex items-center justify-between"
+                    key={alert.requestId}
+                    className="bg-rose-50 border border-rose-100 p-4 md:p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0"
                   >
                     <div>
                       <div className="flex items-center space-x-3 mb-2">
-                        <span className="bg-rose-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">
+                        <span className="bg-rose-500 text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">
                           {alert.urgency}
                         </span>
-                        <h4 className="text-rose-900 font-extrabold text-lg">
+                        <h4 className="text-rose-900 font-extrabold text-base md:text-lg">
                           {alert.message}
                         </h4>
                       </div>
-                      <p className="text-rose-700 font-medium text-sm">
+                      <p className="text-rose-700 font-medium text-xs md:text-sm">
                         Requested Type:{" "}
                         <span className="font-extrabold text-rose-900">
                           {alert.bloodType}
                         </span>
                       </p>
                     </div>
-                    <div className="flex space-x-3">
+                    <div className="flex w-full md:w-auto space-x-2 md:space-x-3">
                       <button
                         onClick={() => handleAccept(alert.requestId)}
-                        className="px-6 py-3 bg-rose-500 text-white rounded-2xl font-bold hover:bg-rose-600 transition shadow-lg shadow-rose-500/30"
+                        className="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-rose-500 text-white rounded-xl md:rounded-2xl font-bold text-xs md:text-base hover:bg-rose-600 transition shadow-lg shadow-rose-500/30"
                       >
                         I Can Donate
                       </button>
@@ -299,7 +299,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
                             ),
                           )
                         }
-                        className="px-6 py-3 bg-white text-rose-500 rounded-2xl font-bold hover:bg-rose-50 transition border border-rose-200"
+                        className="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-white text-rose-500 rounded-xl md:rounded-2xl font-bold text-xs md:text-base hover:bg-rose-50 transition border border-rose-200"
                       >
                         Decline
                       </button>

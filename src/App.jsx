@@ -154,8 +154,8 @@ export default function App() {
         </div>
 
         {/* Right Side: Login Panel */}
-        <div className="w-full lg:w-[45%] flex items-center justify-center p-8 bg-zinc-50 relative">
-          <div className="max-w-md w-full bg-white rounded-[40px] shadow-2xl p-12 border border-zinc-100 relative z-10">
+        <div className="w-full lg:w-[45%] flex items-center justify-center p-4 md:p-8 bg-zinc-50 relative">
+          <div className="max-w-md w-full bg-white rounded-[40px] shadow-2xl p-6 md:p-12 border border-zinc-100 relative z-10">
             <div className="text-center mb-12">
               <div className="w-20 h-20 bg-zinc-900 text-white rounded-[28px] flex items-center justify-center mx-auto mb-8 text-3xl shadow-xl shadow-zinc-900/20">
                 <svg
@@ -297,7 +297,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F4F5F7] font-sans flex overflow-hidden">
+    <div className="min-h-screen bg-[#F4F5F7] font-sans flex flex-col md:flex-row overflow-hidden relative">
       <Sidebar
         role={currentView}
         onLogout={() => {
@@ -308,7 +308,7 @@ export default function App() {
         setActiveTab={setActiveTab}
       />
 
-      <main className="flex-1 overflow-y-auto p-8 h-screen">
+      <main className="flex-1 overflow-y-auto p-4 md:p-8 h-screen pb-28 md:pb-8">
         <div className="max-w-6xl mx-auto">
           {currentView === "donor" && (
             <DonorDashboard
