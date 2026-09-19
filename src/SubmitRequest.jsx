@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import HospitalDashboard from "./HospitalDashboard";
@@ -68,7 +69,7 @@ export default function SubmitRequest({ requesterId }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/requests", {
+      const response = await axios.post(`${API_BASE_URL}/api/requests`, {
         requester: { requesterId: requesterId }, // Links to the logged-in hospital[cite: 3]
         bloodTypeNeeded: bloodType,
         unitsNeeded: parseInt(units),

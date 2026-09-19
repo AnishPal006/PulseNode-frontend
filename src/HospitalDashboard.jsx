@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config';
 import { useState, useEffect } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -22,17 +23,17 @@ export default function HospitalDashboard({
   useEffect(() => {
     // Fetch Hospital Analytics
     axios
-      .get(`http://localhost:8080/api/analytics/hospital/${requesterId}`)
+      .get(`${API_BASE_URL}/api/analytics/hospital/${requesterId}`)
       .then((res) => setAnalytics(res.data))
       .catch((err) => console.error("Failed to fetch analytics", err));
 
     // Fetch Hospital History
     axios
-      .get(`http://localhost:8080/api/hospitals/${requesterId}/history`)
+      .get(`${API_BASE_URL}/api/hospitals/${requesterId}/history`)
       .then((res) => setHistory(res.data))
       .catch((err) => console.error("Failed to fetch history", err));
 
-    const socket = new SockJS("http://localhost:8080/ws-blood-donation");
+    const socket = new SockJS(`${API_BASE_URL}/ws-blood-donation`);
     const stompClient = new Client({
       webSocketFactory: () => socket,
       onConnect: () => {
@@ -69,7 +70,7 @@ export default function HospitalDashboard({
 
     try {
       await axios.post(
-        `http://localhost:8080/api/donations/${currentRequestId}/complete`,
+        `${API_BASE_URL}/api/donations/${currentRequestId}/complete`,
         {
           donorId: matchedDonorId,
         },
@@ -78,13 +79,13 @@ export default function HospitalDashboard({
       setRequestStatus("COMPLETED");
       // refresh analytics
       const res = await axios.get(
-        `http://localhost:8080/api/analytics/hospital/${requesterId}`,
+        `${API_BASE_URL}/api/analytics/hospital/${requesterId}`,
       );
       setAnalytics(res.data);
 
       // refresh history
       const histRes = await axios.get(
-        `http://localhost:8080/api/hospitals/${requesterId}/history`,
+        `${API_BASE_URL}/api/hospitals/${requesterId}/history`,
       );
       setHistory(histRes.data);
     } catch (e) {
@@ -103,11 +104,11 @@ export default function HospitalDashboard({
   const handleCancelRequest = async (requestId) => {
     try {
       await axios.post(
-        `http://localhost:8080/api/requests/${requestId}/cancel`,
+        `${API_BASE_URL}/api/requests/${requestId}/cancel`,
       );
       // refresh history
       const histRes = await axios.get(
-        `http://localhost:8080/api/hospitals/${requesterId}/history`,
+        `${API_BASE_URL}/api/hospitals/${requesterId}/history`,
       );
       setHistory(histRes.data);
       if (currentRequestId === requestId) {

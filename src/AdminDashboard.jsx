@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -9,17 +10,17 @@ export default function AdminDashboard({ activeTab }) {
   useEffect(() => {
     if (activeTab === "dashboard" || !activeTab) {
       axios
-        .get("http://localhost:8080/api/analytics/admin")
+        .get(`${API_BASE_URL}/api/analytics/admin`)
         .then((res) => setStats(res.data))
         .catch((err) => console.error("Failed to fetch admin stats", err));
     } else if (activeTab === "donors") {
       axios
-        .get("http://localhost:8080/api/donors")
+        .get(`${API_BASE_URL}/api/donors`)
         .then((res) => setDonors(res.data))
         .catch((err) => console.error("Failed to fetch donors", err));
     } else if (activeTab === "hospitals") {
       axios
-        .get("http://localhost:8080/api/requesters")
+        .get(`${API_BASE_URL}/api/requesters`)
         .then((res) => setHospitals(res.data))
         .catch((err) => console.error("Failed to fetch hospitals", err));
     }

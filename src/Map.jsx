@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config';
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -38,7 +39,7 @@ const MapView = ({ onAccept, onDecline }) => {
 
     const fetchRequests = () => {
       axios
-        .get("http://localhost:8080/api/requests/active")
+        .get(`${API_BASE_URL}/api/requests/active`)
         .then((res) => setRequests(res.data))
         .catch((err) => console.error("Error fetching active requests", err));
     };

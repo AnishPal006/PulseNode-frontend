@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config';
 import { useState } from "react";
 import axios from "axios";
 import DonorDashboard from "./DonorDashboard";
@@ -30,7 +31,7 @@ export default function App() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        `${API_BASE_URL}/api/auth/login`,
         {
           email: adminEmail,
           password: adminPassword,
@@ -57,7 +58,7 @@ export default function App() {
         },
       );
       const response = await axios.post(
-        "http://localhost:8080/api/auth/google-login",
+        `${API_BASE_URL}/api/auth/google-login`,
         {
           token: "mock-google-token",
           role: role,

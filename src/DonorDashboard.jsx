@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config';
 import { useState, useEffect } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -13,17 +14,17 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
   useEffect(() => {
     // Fetch donor details
     axios
-      .get(`http://localhost:8080/api/donors/${donorId}`)
+      .get(`${API_BASE_URL}/api/donors/${donorId}`)
       .then((res) => setDonorDetails(res.data))
       .catch((err) => console.error("Failed to fetch donor details", err));
 
     // Fetch history
     axios
-      .get(`http://localhost:8080/api/donors/${donorId}/history`)
+      .get(`${API_BASE_URL}/api/donors/${donorId}/history`)
       .then((res) => setHistory(res.data))
       .catch((err) => console.error("Failed to fetch history", err));
 
-    const socket = new SockJS("http://localhost:8080/ws-blood-donation");
+    const socket = new SockJS(`${API_BASE_URL}/ws-blood-donation`);
     const stompClient = new Client({
       webSocketFactory: () => socket,
       onConnect: () => {
@@ -48,7 +49,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
   const handleAccept = async (requestId) => {
     try {
       await axios.post(
-        `http://localhost:8080/api/requests/${requestId}/responses`,
+        `${API_BASE_URL}/api/requests/${requestId}/responses`,
         {
           donorId: donorId,
           answer: "accept",

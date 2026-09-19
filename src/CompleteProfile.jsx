@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config';
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -35,7 +36,7 @@ export default function CompleteProfile({ tempUser, onComplete }) {
               };
 
         const response = await axios.post(
-          `http://localhost:8080${endpoint}`,
+          `${API_BASE_URL}${endpoint}`,
           payload,
         );
         const newId =
