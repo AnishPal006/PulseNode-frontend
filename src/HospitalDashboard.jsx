@@ -86,16 +86,16 @@ export default function HospitalDashboard({
             if (response.donorId) {
               setMatchedDonorId(response.donorId);
             }
-
-            // Subscribe to the live GPS tracking topic for this specific request
-            if (response.requestId) {
-              stompClient.subscribe(
-                `/topic/tracking/${response.requestId}`,
-                (trackMsg) => {
-                  const trackData = JSON.parse(trackMsg.body);
-                  setTrackingData(trackData);
-                },
-              );
+            
+            // Just use the coordinates and distance passed in the matched event payload!
+            if (response.donorLat && response.hospLat) {
+              setTrackingData({
+                latitude: response.donorLat,
+                longitude: response.donorLng,
+                hospLat: response.hospLat,
+                hospLng: response.hospLng,
+                distanceKm: response.distanceKm
+              });
             }
           }
         });
@@ -276,24 +276,24 @@ export default function HospitalDashboard({
                       <div className="w-full max-w-2xl bg-zinc-800 p-2 rounded-2xl border border-zinc-700 mb-6">
                         <div className="flex justify-between items-center px-4 mb-2">
                           <span className="text-zinc-400 font-bold text-sm">
-                            LIVE ETA
+                            DISTANCE
                           </span>
                           <span className="text-lime-400 font-extrabold text-xl">
-                            {trackingData.etaMinutes} min
+                            {trackingData.distanceKm} km
                           </span>
                         </div>
                         <div className="h-64 w-full rounded-xl overflow-hidden mb-2 relative z-0">
                           <MapContainer
                             center={[
-                              trackingData.latitude,
-                              trackingData.longitude,
+                              trackingData.hospLat,
+                              trackingData.hospLng,
                             ]}
                             zoom={13}
                             style={{ height: "100%", width: "100%", zIndex: 0 }}
                             zoomControl={false}
                           >
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                            {/* Hospital Marker (approximate static center for now) */}
+                            {/* Hospital Marker */}
                             <Marker
                               position={[
                                 trackingData.hospLat,
@@ -318,7 +318,7 @@ export default function HospitalDashboard({
                               opacity={0.7}
                             />
 
-                            {/* Donor Moving Marker */}
+                            {/* Donor Static Marker */}
                             <Marker
                               position={[
                                 trackingData.latitude,
@@ -326,15 +326,9 @@ export default function HospitalDashboard({
                               ]}
                               icon={donorIcon}
                             >
-                              <Popup>Donor En Route</Popup>
+                              <Popup>Donor Location</Popup>
                             </Marker>
                           </MapContainer>
-                        </div>
-                        <div className="w-full bg-zinc-900 h-2 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-lime-400 transition-all duration-1000 ease-linear"
-                            style={{ width: `${trackingData.progress}%` }}
-                          ></div>
                         </div>
                       </div>
                     ) : (
@@ -349,7 +343,7 @@ export default function HospitalDashboard({
                       onClick={handleCompleteDonation}
                       className="px-8 py-4 bg-lime-400 text-black rounded-2xl font-extrabold hover:bg-lime-300 transition shadow-[0_0_20px_rgba(212,247,112,0.3)]"
                     >
-                      Confirm Arrival & Completion
+                      Verify Blood Donation
                     </button>
                   </div>
                 ) : requestStatus === "COMPLETED" ? (
