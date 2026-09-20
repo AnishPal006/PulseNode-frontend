@@ -123,6 +123,7 @@ export default function HospitalDashboard({
       );
       alert("Donation marked as completed!");
       setRequestStatus("COMPLETED");
+      setTrackingData(null);
       // refresh analytics
       const res = await axios.get(
         `${API_BASE_URL}/api/analytics/hospital/${requesterId}`,
@@ -158,6 +159,7 @@ export default function HospitalDashboard({
       if (currentRequestId === requestId) {
         setRequestStatus("CANCELLED");
         setMatchMessage("");
+        setTrackingData(null);
       }
     } catch (e) {
       console.error("Failed to cancel request", e);
