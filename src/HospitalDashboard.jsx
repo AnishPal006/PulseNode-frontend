@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import L from "leaflet";
 
 export default function HospitalDashboard({
@@ -24,20 +24,20 @@ export default function HospitalDashboard({
 
   const [matchedDonorId, setMatchedDonorId] = useState(null);
   const [trackingData, setTrackingData] = useState(null);
-  
+
   // Custom icons for the map
   const hospitalIcon = L.divIcon({
     className: "custom-icon",
     html: "<div class='w-6 h-6 bg-rose-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center'><div class='w-2 h-2 bg-white rounded-full'></div></div>",
     iconSize: [24, 24],
-    iconAnchor: [12, 12]
+    iconAnchor: [12, 12],
   });
 
   const donorIcon = L.divIcon({
     className: "custom-icon",
     html: "<div class='w-6 h-6 bg-blue-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center animate-pulse'><div class='w-2 h-2 bg-white rounded-full'></div></div>",
     iconSize: [24, 24],
-    iconAnchor: [12, 12]
+    iconAnchor: [12, 12],
   });
 
   useEffect(() => {
@@ -80,13 +80,16 @@ export default function HospitalDashboard({
             if (response.donorId) {
               setMatchedDonorId(response.donorId);
             }
-            
+
             // Subscribe to the live GPS tracking topic for this specific request
             if (response.requestId) {
-              stompClient.subscribe(`/topic/tracking/${response.requestId}`, (trackMsg) => {
-                const trackData = JSON.parse(trackMsg.body);
-                setTrackingData(trackData);
-              });
+              stompClient.subscribe(
+                `/topic/tracking/${response.requestId}`,
+                (trackMsg) => {
+                  const trackData = JSON.parse(trackMsg.body);
+                  setTrackingData(trackData);
+                },
+              );
             }
           }
         });
@@ -220,7 +223,7 @@ export default function HospitalDashboard({
             </div>
           </div>
 
-          <div className="bg-[#151515] rounded-[32px] p-8 text-white shadow-xl relative overflow-hidden h-[400px]">
+          <div className="bg-[#151515] rounded-[32px] p-8 text-white shadow-xl relative overflow-hidden min-h-[500px]">
             <div className="relative z-10 flex flex-col h-full">
               <h3 className="text-zinc-400 font-bold mb-6 flex justify-between items-center">
                 <span>Active Emergency Dispatch</span>
@@ -262,35 +265,64 @@ export default function HospitalDashboard({
                     <h2 className="text-xl font-extrabold text-white mb-4">
                       {matchMessage}
                     </h2>
-                    
+
                     {trackingData ? (
                       <div className="w-full max-w-2xl bg-zinc-800 p-2 rounded-2xl border border-zinc-700 mb-6">
                         <div className="flex justify-between items-center px-4 mb-2">
-                          <span className="text-zinc-400 font-bold text-sm">LIVE ETA</span>
-                          <span className="text-lime-400 font-extrabold text-xl">{trackingData.etaMinutes} min</span>
+                          <span className="text-zinc-400 font-bold text-sm">
+                            LIVE ETA
+                          </span>
+                          <span className="text-lime-400 font-extrabold text-xl">
+                            {trackingData.etaMinutes} min
+                          </span>
                         </div>
                         <div className="h-64 w-full rounded-xl overflow-hidden mb-2 relative z-0">
-                          <MapContainer 
-                            center={[trackingData.latitude, trackingData.longitude]} 
-                            zoom={13} 
-                            style={{ height: '100%', width: '100%', zIndex: 0 }}
+                          <MapContainer
+                            center={[
+                              trackingData.latitude,
+                              trackingData.longitude,
+                            ]}
+                            zoom={13}
+                            style={{ height: "100%", width: "100%", zIndex: 0 }}
                             zoomControl={false}
                           >
-                            <TileLayer
-                              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                            />
+                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                             {/* Hospital Marker (approximate static center for now) */}
-                            <Marker position={[trackingData.latitude - 0.01, trackingData.longitude - 0.01]} icon={hospitalIcon}>
+                            <Marker
+                              position={[
+                                trackingData.latitude - 0.01,
+                                trackingData.longitude - 0.01,
+                              ]}
+                              icon={hospitalIcon}
+                            >
                               <Popup>Hospital</Popup>
                             </Marker>
+                            
+                            <Polyline 
+                                positions={[
+                                  [trackingData.latitude, trackingData.longitude],
+                                  [trackingData.latitude - 0.01, trackingData.longitude - 0.01]
+                                ]} 
+                                color="#a3e635" 
+                                dashArray="10, 10" 
+                                weight={3} 
+                                opacity={0.7} 
+                            />
+                            
                             {/* Donor Moving Marker */}
-                            <Marker position={[trackingData.latitude, trackingData.longitude]} icon={donorIcon}>
+                            <Marker
+                              position={[
+                                trackingData.latitude,
+                                trackingData.longitude,
+                              ]}
+                              icon={donorIcon}
+                            >
                               <Popup>Donor En Route</Popup>
                             </Marker>
                           </MapContainer>
                         </div>
                         <div className="w-full bg-zinc-900 h-2 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-lime-400 transition-all duration-1000 ease-linear"
                             style={{ width: `${trackingData.progress}%` }}
                           ></div>
@@ -298,7 +330,9 @@ export default function HospitalDashboard({
                       </div>
                     ) : (
                       <div className="w-full max-w-2xl h-64 bg-zinc-800 rounded-2xl border border-zinc-700 mb-6 flex items-center justify-center">
-                        <div className="animate-pulse text-zinc-500 font-bold">Establishing GPS Connection...</div>
+                        <div className="animate-pulse text-zinc-500 font-bold">
+                          Establishing GPS Connection...
+                        </div>
                       </div>
                     )}
 
