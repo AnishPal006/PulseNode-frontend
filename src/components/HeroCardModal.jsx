@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import html2canvas from "html2canvas";
+import * as htmlToImage from "html-to-image";
 import { Download, X } from "lucide-react";
 
 export default function HeroCardModal({ show, onClose, achievementData }) {
@@ -10,13 +10,7 @@ export default function HeroCardModal({ show, onClose, achievementData }) {
   const handleDownload = async () => {
     try {
       if (cardRef.current) {
-        // Temporarily change styling if needed, html2canvas handles most things
-        const canvas = await html2canvas(cardRef.current, {
-          backgroundColor: null, // preserve transparent or rounded edges
-          scale: 2, // better quality
-          useCORS: true, // sometimes needed for external fonts/styles
-        });
-        const dataUrl = canvas.toDataURL("image/png");
+        const dataUrl = await htmlToImage.toPng(cardRef.current, { quality: 1.0, pixelRatio: 2 });
         const link = document.createElement("a");
         link.href = dataUrl;
         const nameStr = achievementData.donorName ? achievementData.donorName : "hero";
@@ -32,7 +26,7 @@ export default function HeroCardModal({ show, onClose, achievementData }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-sm flex flex-col items-center">
         {/* Close Button */}
         <button
