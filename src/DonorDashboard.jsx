@@ -336,103 +336,102 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
             </div>
           </div>
 
-          
-            <div className="flex bg-zinc-100/80 backdrop-blur-md p-1.5 rounded-2xl w-max mt-2">
-              <button
-                onClick={() => setInternalTab("action")}
-                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "action" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
-              >
-                Action & Map
-              </button>
-              <button
-                onClick={() => setInternalTab("impact")}
-                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "impact" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
-              >
-                Impact & Heroes
-              </button>
-            </div>
+          <div className="flex bg-zinc-100/80 backdrop-blur-md p-1.5 rounded-2xl w-max mt-2">
+            <button
+              onClick={() => setInternalTab("action")}
+              className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "action" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
+            >
+              Action & Map
+            </button>
+            <button
+              onClick={() => setInternalTab("impact")}
+              className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "impact" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
+            >
+              Impact & Heroes
+            </button>
+          </div>
 
-            {internalTab === "impact" ? (
-              <DonorCharts />
-            ) : (
-              <div className="space-y-4">
-
-
-          <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 mt-6">
-            <h3 className="text-xl font-extrabold text-zinc-900 mb-6">
-              Active Emergencies
-            </h3>
-            {alerts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mb-4">
-                  <span className="text-2xl opacity-50">📡</span>
-                </div>
-                <p className="text-zinc-500 font-medium">
-                  Radar is quiet. No active requests in your area.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {alerts.map((alert, index) => (
-                  <div
-                    key={alert.requestId}
-                    className="bg-rose-50 border border-rose-100 p-4 md:p-4 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0"
-                  >
-                    <div>
-                      <div className="flex items-center space-x-3 mb-2">
-                        <span className="bg-rose-500 text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">
-                          {alert.urgency}
-                        </span>
-                        <h4 className="text-rose-900 font-extrabold text-base md:text-lg">
-                          {alert.message}
-                        </h4>
-                      </div>
-                      <p className="text-rose-700 font-medium text-xs md:text-sm">
-                        Requested Type:{" "}
-                        <span className="font-extrabold text-rose-900">
-                          {alert.bloodType}
-                        </span>
-                      </p>
+          {internalTab === "impact" ? (
+            <DonorCharts />
+          ) : (
+            <div className="space-y-4">
+              <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 mt-6">
+                <h3 className="text-xl font-extrabold text-zinc-900 mb-6">
+                  Active Emergencies
+                </h3>
+                {alerts.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mb-4">
+                      <span className="text-2xl opacity-50">📡</span>
                     </div>
-                    <div className="flex w-full md:w-auto space-x-2 md:space-x-3">
-                      <button
-                        onClick={() => handleAccept(alert.requestId)}
-                        className="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-rose-500 text-white rounded-xl md:rounded-2xl font-bold text-xs md:text-base hover:bg-rose-600 transition shadow-lg shadow-rose-500/30"
-                      >
-                        I Can Donate
-                      </button>
-                      <button
-                        onClick={() =>
-                          setAlerts(
-                            alerts.filter(
-                              (a) => a.requestId !== alert.requestId,
-                            ),
-                          )
-                        }
-                        className="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-white text-rose-500 rounded-xl md:rounded-2xl font-bold text-xs md:text-base hover:bg-rose-50 transition border border-rose-200"
-                      >
-                        Decline
-                      </button>
-                    </div>
+                    <p className="text-zinc-500 font-medium">
+                      Radar is quiet. No active requests in your area.
+                    </p>
                   </div>
-                ))}
+                ) : (
+                  <div className="space-y-4">
+                    {alerts.map((alert, index) => (
+                      <div
+                        key={alert.requestId}
+                        className="bg-rose-50 border border-rose-100 p-4 md:p-4 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0"
+                      >
+                        <div>
+                          <div className="flex items-center space-x-3 mb-2">
+                            <span className="bg-rose-500 text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">
+                              {alert.urgency}
+                            </span>
+                            <h4 className="text-rose-900 font-extrabold text-base md:text-lg">
+                              {alert.message}
+                            </h4>
+                          </div>
+                          <p className="text-rose-700 font-medium text-xs md:text-sm">
+                            Requested Type:{" "}
+                            <span className="font-extrabold text-rose-900">
+                              {alert.bloodType}
+                            </span>
+                          </p>
+                        </div>
+                        <div className="flex w-full md:w-auto space-x-2 md:space-x-3">
+                          <button
+                            onClick={() => handleAccept(alert.requestId)}
+                            className="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-rose-500 text-white rounded-xl md:rounded-2xl font-bold text-xs md:text-base hover:bg-rose-600 transition shadow-lg shadow-rose-500/30"
+                          >
+                            I Can Donate
+                          </button>
+                          <button
+                            onClick={() =>
+                              setAlerts(
+                                alerts.filter(
+                                  (a) => a.requestId !== alert.requestId,
+                                ),
+                              )
+                            }
+                            className="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-white text-rose-500 rounded-xl md:rounded-2xl font-bold text-xs md:text-base hover:bg-rose-50 transition border border-rose-200"
+                          >
+                            Decline
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Live Radar */}
-          <div className="col-span-12">
-            <div className="overflow-hidden rounded-[32px] shadow-sm border border-zinc-100">
-              <MapView
-                onAccept={handleAccept}
-                onDecline={(requestId) => {
-                  declinedIds.current.add(requestId);
-                  setAlerts(alerts.filter((a) => a.requestId !== requestId));
-                }}
-              />
+              {/* Live Radar */}
+              <div className="col-span-12">
+                <div className="overflow-hidden rounded-[32px] shadow-sm border border-zinc-100">
+                  <MapView
+                    onAccept={handleAccept}
+                    onDecline={(requestId) => {
+                      declinedIds.current.add(requestId);
+                      setAlerts(
+                        alerts.filter((a) => a.requestId !== requestId),
+                      );
+                    }}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          </div>
           )}
         </div>
 

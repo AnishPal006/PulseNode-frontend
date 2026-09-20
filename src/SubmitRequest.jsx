@@ -243,7 +243,7 @@ export default function SubmitRequest({ requesterId }) {
               <MapContainer
                 center={pos}
                 zoom={14}
-                style={{ height: "100%", width: "100%", zIndex: 1 }}
+                style={{ height: "300px", width: "100%", zIndex: 0 }}
               >
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

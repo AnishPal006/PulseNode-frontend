@@ -177,7 +177,7 @@ export default function Sidebar({ role, onLogout, activeTab, setActiveTab }) {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#151515] text-white p-3 flex justify-around items-center z-[90] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] pb-safe rounded-t-3xl border-t border-zinc-800">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#151515] text-white p-3 flex justify-around items-center z-[9999] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] pb-safe rounded-t-3xl border-t border-zinc-800">
         {items.map((item) => {
           const isActive = activeTab === item.id;
           return (

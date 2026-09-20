@@ -110,9 +110,9 @@ export default function App() {
 
   if (currentView === "login") {
     return (
-      <div className="min-h-screen font-sans flex overflow-hidden bg-white">
+      <div className="min-h-screen font-sans flex flex-col lg:flex-row overflow-y-auto bg-white">
         {/* Left Side: Hero Section */}
-        <div className="hidden lg:flex w-[55%] bg-[#151515] text-white p-16 flex-col justify-between relative overflow-hidden">
+        <div className="flex w-full lg:w-[55%] min-h-[40vh] lg:min-h-screen bg-[#151515] text-white p-16 flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-rose-500/10 rounded-full blur-[100px] -mr-40 -mt-40"></div>
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-lime-400/10 rounded-full blur-[100px] -ml-40 -mb-40"></div>
 
@@ -160,16 +160,6 @@ export default function App() {
 
         {/* Right Side: Login Panel */}
         <div className="w-full lg:w-[45%] flex flex-col items-center justify-center p-4 md:p-8 bg-zinc-50 relative overflow-y-auto">
-          {/* Mobile Hero (Hidden on Desktop) */}
-          <div className="lg:hidden text-center mb-8 mt-4 w-full px-4">
-            <h1 className="text-4xl font-extrabold tracking-tighter mb-2">
-              PulseNode <span className="text-rose-500">Network</span>
-            </h1>
-            <p className="text-zinc-500 font-medium text-sm">
-              Connecting hospitals with eligible donors instantly.
-            </p>
-          </div>
-
           <div className="max-w-md w-full bg-white rounded-[40px] shadow-2xl p-6 md:p-12 border border-zinc-100 relative z-10">
             <div className="text-center mb-12">
               <div className="w-20 h-20 bg-zinc-900 text-white rounded-[28px] flex items-center justify-center mx-auto mb-8 text-3xl shadow-xl shadow-zinc-900/20">
@@ -323,7 +313,7 @@ export default function App() {
         setActiveTab={setActiveTab}
       />
 
-      <main className="flex-1 overflow-y-auto p-4 md:p-8 h-screen pb-28 md:pb-8">
+      <main className="flex-1 overflow-y-auto p-4 md:p-8 h-[100dvh] pb-36 md:pb-8">
         <div className="max-w-6xl mx-auto">
           {currentView === "donor" && (
             <DonorDashboard

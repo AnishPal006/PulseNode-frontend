@@ -233,194 +233,201 @@ export default function HospitalDashboard({
             </div>
           </div>
 
-          
-            <div className="flex bg-zinc-100/80 backdrop-blur-md p-1.5 rounded-2xl w-max mt-2">
-              <button
-                onClick={() => setInternalTab("dispatch")}
-                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "dispatch" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
-              >
-                Live Dispatch
-              </button>
-              <button
-                onClick={() => setInternalTab("analytics")}
-                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "analytics" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
-              >
-                Analytics
-              </button>
-            </div>
+          <div className="flex bg-zinc-100/80 backdrop-blur-md p-1.5 rounded-2xl w-max mt-2">
+            <button
+              onClick={() => setInternalTab("dispatch")}
+              className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "dispatch" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
+            >
+              Live Dispatch
+            </button>
+            <button
+              onClick={() => setInternalTab("analytics")}
+              className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "analytics" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
+            >
+              Analytics
+            </button>
+          </div>
 
-            {internalTab === "analytics" ? (
-              <HospitalCharts />
-            ) : (
-              <div className="space-y-4">
+          {internalTab === "analytics" ? (
+            <HospitalCharts />
+          ) : (
+            <div className="space-y-4">
+              <div className="bg-[#151515] rounded-[32px] p-5 text-white shadow-xl relative overflow-hidden h-[320px] mt-6">
+                <div className="relative z-10 flex flex-col h-full">
+                  <h3 className="text-zinc-400 font-bold mb-6 flex justify-between items-center">
+                    <span>Active Emergency Dispatch</span>
+                    <span className="flex items-center">
+                      <span
+                        className={`w-2 h-2 rounded-full mr-2 ${requestStatus === "COMPLETED" ? "bg-blue-400" : requestStatus === "CANCELLED" ? "bg-zinc-400" : "bg-lime-400"} animate-pulse`}
+                      ></span>
+                      Live Monitor
+                    </span>
+                  </h3>
 
+                  <div className="flex-1 flex flex-col justify-center items-center text-center">
+                    <span
+                      className={`px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-widest mb-6 border ${
+                        requestStatus === "MATCHED"
+                          ? "bg-lime-400/10 text-lime-400 border-lime-400/20"
+                          : requestStatus === "COMPLETED"
+                            ? "bg-blue-400/10 text-blue-400 border-blue-400/20"
+                            : requestStatus === "CANCELLED"
+                              ? "bg-zinc-400/10 text-zinc-400 border-zinc-400/20"
+                              : "bg-rose-500/10 text-rose-500 border-rose-500/20"
+                      }`}
+                    >
+                      {requestStatus === "MATCHED"
+                        ? "Match Found"
+                        : requestStatus === "COMPLETED"
+                          ? "Mission Complete"
+                          : requestStatus === "CANCELLED"
+                            ? "Cancelled"
+                            : requestStatus === "IDLE"
+                              ? "Standby"
+                              : "Open - Searching"}
+                    </span>
 
-          <div className="bg-[#151515] rounded-[32px] p-5 text-white shadow-xl relative overflow-hidden h-[320px] mt-6">
-            <div className="relative z-10 flex flex-col h-full">
-              <h3 className="text-zinc-400 font-bold mb-6 flex justify-between items-center">
-                <span>Active Emergency Dispatch</span>
-                <span className="flex items-center">
-                  <span
-                    className={`w-2 h-2 rounded-full mr-2 ${requestStatus === "COMPLETED" ? "bg-blue-400" : requestStatus === "CANCELLED" ? "bg-zinc-400" : "bg-lime-400"} animate-pulse`}
-                  ></span>
-                  Live Monitor
-                </span>
-              </h3>
+                    {matchMessage &&
+                    requestStatus !== "COMPLETED" &&
+                    requestStatus !== "CANCELLED" ? (
+                      <div className="w-full flex flex-col items-center animate-fade-in">
+                        <h2 className="text-xl font-extrabold text-white mb-4">
+                          {matchMessage}
+                        </h2>
 
-              <div className="flex-1 flex flex-col justify-center items-center text-center">
-                <span
-                  className={`px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-widest mb-6 border ${
-                    requestStatus === "MATCHED"
-                      ? "bg-lime-400/10 text-lime-400 border-lime-400/20"
-                      : requestStatus === "COMPLETED"
-                        ? "bg-blue-400/10 text-blue-400 border-blue-400/20"
-                        : requestStatus === "CANCELLED"
-                          ? "bg-zinc-400/10 text-zinc-400 border-zinc-400/20"
-                          : "bg-rose-500/10 text-rose-500 border-rose-500/20"
-                  }`}
-                >
-                  {requestStatus === "MATCHED"
-                    ? "Match Found"
-                    : requestStatus === "COMPLETED"
-                      ? "Mission Complete"
-                      : requestStatus === "CANCELLED"
-                        ? "Cancelled"
-                        : requestStatus === "IDLE"
-                          ? "Standby"
-                          : "Open - Searching"}
-                </span>
+                        {trackingData ? (
+                          <div className="w-full max-w-2xl bg-zinc-800 p-2 rounded-2xl border border-zinc-700 mb-6">
+                            <div className="flex justify-between items-center px-4 mb-2">
+                              <span className="text-zinc-400 font-bold text-sm">
+                                DISTANCE
+                              </span>
+                              <span className="text-lime-400 font-extrabold text-xl">
+                                {trackingData.distanceKm} km
+                              </span>
+                            </div>
+                            <div className="h-64 w-full rounded-xl overflow-hidden mb-2 relative z-0">
+                              <MapContainer
+                                center={[
+                                  trackingData.hospLat,
+                                  trackingData.hospLng,
+                                ]}
+                                zoom={13}
+                                style={{
+                                  height: "100%",
+                                  width: "100%",
+                                  zIndex: 0,
+                                }}
+                                zoomControl={false}
+                              >
+                                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                                {/* Hospital Marker */}
+                                <Marker
+                                  position={[
+                                    trackingData.hospLat,
+                                    trackingData.hospLng,
+                                  ]}
+                                  icon={hospitalIcon}
+                                >
+                                  <Popup>Hospital</Popup>
+                                </Marker>
 
-                {matchMessage &&
-                requestStatus !== "COMPLETED" &&
-                requestStatus !== "CANCELLED" ? (
-                  <div className="w-full flex flex-col items-center animate-fade-in">
-                    <h2 className="text-xl font-extrabold text-white mb-4">
-                      {matchMessage}
-                    </h2>
+                                <Polyline
+                                  positions={[
+                                    [
+                                      trackingData.latitude,
+                                      trackingData.longitude,
+                                    ],
+                                    [
+                                      trackingData.hospLat,
+                                      trackingData.hospLng,
+                                    ],
+                                  ]}
+                                  color="#a3e635"
+                                  dashArray="10, 10"
+                                  weight={3}
+                                  opacity={0.7}
+                                />
 
-                    {trackingData ? (
-                      <div className="w-full max-w-2xl bg-zinc-800 p-2 rounded-2xl border border-zinc-700 mb-6">
-                        <div className="flex justify-between items-center px-4 mb-2">
-                          <span className="text-zinc-400 font-bold text-sm">
-                            DISTANCE
-                          </span>
-                          <span className="text-lime-400 font-extrabold text-xl">
-                            {trackingData.distanceKm} km
-                          </span>
+                                {/* Donor Static Marker */}
+                                <Marker
+                                  position={[
+                                    trackingData.latitude,
+                                    trackingData.longitude,
+                                  ]}
+                                  icon={donorIcon}
+                                >
+                                  <Popup>Donor Location</Popup>
+                                </Marker>
+                              </MapContainer>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-full max-w-2xl h-64 bg-zinc-800 rounded-2xl border border-zinc-700 mb-6 flex items-center justify-center">
+                            <div className="animate-pulse text-zinc-500 font-bold">
+                              Establishing GPS Connection...
+                            </div>
+                          </div>
+                        )}
+
+                        <button
+                          onClick={handleCompleteDonation}
+                          className="px-8 py-4 bg-lime-400 text-black rounded-2xl font-extrabold hover:bg-lime-300 transition shadow-[0_0_20px_rgba(212,247,112,0.3)]"
+                        >
+                          Verify Blood Donation
+                        </button>
+                      </div>
+                    ) : requestStatus === "COMPLETED" ? (
+                      <div className="space-y-4">
+                        <div className="w-20 h-20 bg-blue-400/20 rounded-full flex items-center justify-center mx-auto">
+                          <span className="text-3xl">✓</span>
                         </div>
-                        <div className="h-64 w-full rounded-xl overflow-hidden mb-2 relative z-0">
-                          <MapContainer
-                            center={[
-                              trackingData.hospLat,
-                              trackingData.hospLng,
-                            ]}
-                            zoom={13}
-                            style={{ height: "100%", width: "100%", zIndex: 0 }}
-                            zoomControl={false}
-                          >
-                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                            {/* Hospital Marker */}
-                            <Marker
-                              position={[
-                                trackingData.hospLat,
-                                trackingData.hospLng,
-                              ]}
-                              icon={hospitalIcon}
-                            >
-                              <Popup>Hospital</Popup>
-                            </Marker>
-
-                            <Polyline
-                              positions={[
-                                [trackingData.latitude, trackingData.longitude],
-                                [trackingData.hospLat, trackingData.hospLng],
-                              ]}
-                              color="#a3e635"
-                              dashArray="10, 10"
-                              weight={3}
-                              opacity={0.7}
-                            />
-
-                            {/* Donor Static Marker */}
-                            <Marker
-                              position={[
-                                trackingData.latitude,
-                                trackingData.longitude,
-                              ]}
-                              icon={donorIcon}
-                            >
-                              <Popup>Donor Location</Popup>
-                            </Marker>
-                          </MapContainer>
+                        <h2 className="text-2xl font-bold text-white">
+                          Donation Processed
+                        </h2>
+                      </div>
+                    ) : requestStatus === "CANCELLED" ? (
+                      <div className="space-y-4">
+                        <div className="w-20 h-20 bg-zinc-400/20 rounded-full flex items-center justify-center mx-auto">
+                          <span className="text-3xl">✕</span>
                         </div>
+                        <h2 className="text-2xl font-bold text-white">
+                          Request Cancelled
+                        </h2>
+                      </div>
+                    ) : requestStatus === "IDLE" ? (
+                      <div className="space-y-4">
+                        <div className="w-24 h-24 border-2 border-dashed border-zinc-600 rounded-full animate-[spin_10s_linear_infinite] flex items-center justify-center mx-auto">
+                          <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center">
+                            <span className="text-2xl">🌍</span>
+                          </div>
+                        </div>
+                        <h2 className="text-xl font-bold text-zinc-300">
+                          System Online
+                        </h2>
+                        <p className="font-medium text-zinc-500">
+                          No active dispatches. Ready to broadcast.
+                        </p>
                       </div>
                     ) : (
-                      <div className="w-full max-w-2xl h-64 bg-zinc-800 rounded-2xl border border-zinc-700 mb-6 flex items-center justify-center">
-                        <div className="animate-pulse text-zinc-500 font-bold">
-                          Establishing GPS Connection...
-                        </div>
+                      <div className="space-y-4 opacity-60">
+                        <div className="w-16 h-16 border-4 border-zinc-700 border-t-rose-500 rounded-full animate-spin mx-auto"></div>
+                        <p className="font-medium text-zinc-400">
+                          Broadcasting SOS to local radar...
+                        </p>
                       </div>
                     )}
+                  </div>
+                </div>
 
-                    <button
-                      onClick={handleCompleteDonation}
-                      className="px-8 py-4 bg-lime-400 text-black rounded-2xl font-extrabold hover:bg-lime-300 transition shadow-[0_0_20px_rgba(212,247,112,0.3)]"
-                    >
-                      Verify Blood Donation
-                    </button>
-                  </div>
-                ) : requestStatus === "COMPLETED" ? (
-                  <div className="space-y-4">
-                    <div className="w-20 h-20 bg-blue-400/20 rounded-full flex items-center justify-center mx-auto">
-                      <span className="text-3xl">✓</span>
-                    </div>
-                    <h2 className="text-2xl font-bold text-white">
-                      Donation Processed
-                    </h2>
-                  </div>
-                ) : requestStatus === "CANCELLED" ? (
-                  <div className="space-y-4">
-                    <div className="w-20 h-20 bg-zinc-400/20 rounded-full flex items-center justify-center mx-auto">
-                      <span className="text-3xl">✕</span>
-                    </div>
-                    <h2 className="text-2xl font-bold text-white">
-                      Request Cancelled
-                    </h2>
-                  </div>
-                ) : requestStatus === "IDLE" ? (
-                  <div className="space-y-4">
-                    <div className="w-24 h-24 border-2 border-dashed border-zinc-600 rounded-full animate-[spin_10s_linear_infinite] flex items-center justify-center mx-auto">
-                      <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">🌍</span>
-                      </div>
-                    </div>
-                    <h2 className="text-xl font-bold text-zinc-300">
-                      System Online
-                    </h2>
-                    <p className="font-medium text-zinc-500">
-                      No active dispatches. Ready to broadcast.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-4 opacity-60">
-                    <div className="w-16 h-16 border-4 border-zinc-700 border-t-rose-500 rounded-full animate-spin mx-auto"></div>
-                    <p className="font-medium text-zinc-400">
-                      Broadcasting SOS to local radar...
-                    </p>
-                  </div>
-                )}
+                {/* Dark card decorations */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-lime-400/5 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/5 rounded-full blur-3xl"></div>
               </div>
             </div>
-
-            {/* Dark card decorations */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-lime-400/5 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/5 rounded-full blur-3xl"></div>
-          </div>
+          )}
         </div>
-      )}
-    </div>
 
-    <div className="col-span-12 lg:col-span-4 space-y-4">
+        <div className="col-span-12 lg:col-span-4 space-y-4">
           <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 h-full overflow-y-auto">
             <h3 className="text-xl font-extrabold text-zinc-900 mb-6 flex justify-between items-center">
               <span>Recent Activity</span>

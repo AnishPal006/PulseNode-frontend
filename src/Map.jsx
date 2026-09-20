@@ -91,7 +91,7 @@ const MapView = ({ onAccept, onDecline }) => {
         <MapContainer
           center={userPos}
           zoom={13}
-          style={{ height: "100%", width: "100%" }}
+          style={{ height: "400px", width: "100%", zIndex: 0 }}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
