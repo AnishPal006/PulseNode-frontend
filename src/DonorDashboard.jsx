@@ -7,6 +7,17 @@ import MapView from "./Map";
 
 export default function DonorDashboard({ donorId, donorName, activeTab }) {
   const [alerts, setAlerts] = useState([]);
+    useEffect(() => {
+      const fetchActive = () => {
+        axios.get(API_BASE_URL + '/api/requests/active')
+          .then(res => {
+            setAlerts(res.data.map(r => ({ requestId: r.requestId, bloodType: r.bloodTypeNeeded, urgency: r.urgencyLevel, message: 'Urgent match nearby!' })));
+          });
+      };
+      fetchActive();
+      const intId = setInterval(fetchActive, 3000);
+      return () => clearInterval(intId);
+    }, []);
   const [connected, setConnected] = useState(false);
   const [donorDetails, setDonorDetails] = useState(null);
   const [history, setHistory] = useState([]);
@@ -15,7 +26,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
     // Fetch donor details
     axios
       .get(`${API_BASE_URL}/api/donors/${donorId}`)
-      .then((res) => { setDonorDetails(res.data); axios.get(API_BASE_URL + "/api/requests/active").then((reqRes) => { const activeForMe = reqRes.data; setAlerts(activeForMe.map(r => ({ requestId: r.requestId, bloodType: r.bloodTypeNeeded, urgency: r.urgencyLevel, message: "Urgent match nearby!" }))); }); })
+      .then((res) => { setDonorDetails(res.data);  })
       .catch((err) => console.error("Failed to fetch donor details", err));
 
     // Fetch history
