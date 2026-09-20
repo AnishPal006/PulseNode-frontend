@@ -15,7 +15,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
     // Fetch donor details
     axios
       .get(`${API_BASE_URL}/api/donors/${donorId}`)
-      .then((res) => { setDonorDetails(res.data); axios.get(API_BASE_URL + "/api/requests/active").then((reqRes) => { const activeForMe = reqRes.data.filter(r => r.bloodTypeNeeded === res.data.bloodType); setAlerts(activeForMe.map(r => ({ requestId: r.requestId, bloodType: r.bloodTypeNeeded, urgency: r.urgencyLevel, message: "Urgent match nearby!" }))); }); })
+      .then((res) => { setDonorDetails(res.data); axios.get(API_BASE_URL + "/api/requests/active").then((reqRes) => { const activeForMe = reqRes.data; setAlerts(activeForMe.map(r => ({ requestId: r.requestId, bloodType: r.bloodTypeNeeded, urgency: r.urgencyLevel, message: "Urgent match nearby!" }))); }); })
       .catch((err) => console.error("Failed to fetch donor details", err));
 
     // Fetch history
