@@ -10,16 +10,27 @@ import Sidebar from "./Sidebar";
 import { useGoogleLogin } from "@react-oauth/google";
 
 export default function App() {
-  const [currentView, setCurrentView] = useState(() => localStorage.getItem("currentView") || "login"); // login | donor | requester | admin
-  const [userId, setUserId] = useState(() => localStorage.getItem("userId") ? parseInt(localStorage.getItem("userId")) : null);
-  const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '');
-  const [activeTab, setActiveTab] = useState(() => localStorage.getItem('activeTab') || 'dashboard');
+  const [currentView, setCurrentView] = useState(
+    () => localStorage.getItem("currentView") || "login",
+  ); // login | donor | requester | admin
+  const [userId, setUserId] = useState(() =>
+    localStorage.getItem("userId")
+      ? parseInt(localStorage.getItem("userId"))
+      : null,
+  );
+  const [userName, setUserName] = useState(
+    () => localStorage.getItem("userName") || "",
+  );
+  const [activeTab, setActiveTab] = useState(
+    () => localStorage.getItem("activeTab") || "dashboard",
+  );
 
   useEffect(() => {
-    localStorage.setItem('currentView', currentView);
-    if (userId) localStorage.setItem('userId', userId); else localStorage.removeItem('userId');
-    localStorage.setItem('userName', userName);
-    localStorage.setItem('activeTab', activeTab);
+    localStorage.setItem("currentView", currentView);
+    if (userId) localStorage.setItem("userId", userId);
+    else localStorage.removeItem("userId");
+    localStorage.setItem("userName", userName);
+    localStorage.setItem("activeTab", activeTab);
   }, [currentView, userId, userName, activeTab]);
 
   // Used when profile is incomplete
@@ -100,8 +111,6 @@ export default function App() {
     setTempUser(null);
   };
 
-  
-
   if (tempUser) {
     return (
       <CompleteProfile tempUser={tempUser} onComplete={handleProfileComplete} />
@@ -136,8 +145,8 @@ export default function App() {
             </p>
           </div>
 
-          <div className="relative z-10 grid grid-cols-2 gap-8 mb-10">
-            <div className="bg-white/5 p-8 rounded-[32px] backdrop-blur-sm border border-white/10 relative overflow-hidden group hover:bg-white/10 transition-colors">
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 mb-10">
+            <div className="bg-white/5 p-6 sm:p-8 rounded-[32px] backdrop-blur-sm border border-white/10 relative overflow-hidden group hover:bg-white/10 transition-colors">
               <div className="absolute top-0 right-0 w-32 h-32 bg-lime-400/20 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-lime-400/30 transition-all"></div>
               <h3 className="text-5xl font-extrabold text-white mb-2 tracking-tighter relative z-10">
                 &lt; 1 min
@@ -146,7 +155,7 @@ export default function App() {
                 Average SOS dispatch time to local radar.
               </p>
             </div>
-            <div className="bg-white/5 p-8 rounded-[32px] backdrop-blur-sm border border-white/10 relative overflow-hidden group hover:bg-white/10 transition-colors">
+            <div className="bg-white/5 p-6 sm:p-8 rounded-[32px] backdrop-blur-sm border border-white/10 relative overflow-hidden group hover:bg-white/10 transition-colors">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-400/30 transition-all"></div>
               <h3 className="text-5xl font-extrabold text-white mb-2 tracking-tighter relative z-10">
                 100%

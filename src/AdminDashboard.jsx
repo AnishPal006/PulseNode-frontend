@@ -57,13 +57,13 @@ export default function AdminDashboard({ activeTab }) {
             {donors.map((donor) => (
               <div
                 key={donor.donorId}
-                className="flex justify-between items-center p-6 border border-zinc-100 rounded-2xl hover:bg-zinc-50 transition"
+                className="flex flex-col md:flex-row justify-between items-start md:items-center p-5 md:p-6 gap-3 md:gap-0 border border-zinc-100 rounded-2xl hover:bg-zinc-50 transition"
               >
                 <div>
                   <h3 className="font-bold text-zinc-900 text-lg">
                     {donor.name}
                   </h3>
-                  <p className="text-sm font-medium text-zinc-500">
+                  <p className="text-sm font-medium text-zinc-500 break-all md:break-normal">
                     {donor.contactEmail}
                   </p>
                 </div>
@@ -114,13 +114,13 @@ export default function AdminDashboard({ activeTab }) {
             {hospitals.map((hospital) => (
               <div
                 key={hospital.requesterId}
-                className="flex justify-between items-center p-6 border border-zinc-100 rounded-2xl hover:bg-zinc-50 transition"
+                className="flex flex-col md:flex-row justify-between items-start md:items-center p-5 md:p-6 gap-3 md:gap-0 border border-zinc-100 rounded-2xl hover:bg-zinc-50 transition"
               >
                 <div>
                   <h3 className="font-bold text-zinc-900 text-lg">
                     {hospital.name || "Unnamed"}
                   </h3>
-                  <p className="text-sm font-medium text-zinc-500">
+                  <p className="text-sm font-medium text-zinc-500 break-all md:break-normal">
                     {hospital.contactEmail || "No Email"}
                   </p>
                 </div>

@@ -252,7 +252,7 @@ export default function HospitalDashboard({
             <HospitalCharts />
           ) : (
             <div className="space-y-4">
-              <div className="bg-[#151515] rounded-[32px] p-5 text-white shadow-xl relative overflow-hidden h-[320px] mt-6">
+              <div className="bg-[#151515] rounded-[32px] p-5 text-white shadow-xl relative overflow-hidden min-h-[320px] mt-6">
                 <div className="relative z-10 flex flex-col h-full">
                   <h3 className="text-zinc-400 font-bold mb-6 flex justify-between items-center">
                     <span>Active Emergency Dispatch</span>
