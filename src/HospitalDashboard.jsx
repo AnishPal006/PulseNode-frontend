@@ -250,7 +250,17 @@ export default function HospitalDashboard({
                       Request Cancelled
                     </h2>
                   </div>
-                ) : requestStatus === "IDLE" ? (<div className="space-y-4 opacity-60"><div className="w-20 h-20 bg-zinc-700/20 rounded-full flex items-center justify-center mx-auto"><span className="text-3xl">??</span></div><p className="font-medium text-zinc-400">Radar Standby</p></div>) : (
+                ) : requestStatus === "IDLE" ? (
+                  <div className="space-y-4">
+                    <div className="w-24 h-24 border-2 border-dashed border-zinc-600 rounded-full animate-[spin_10s_linear_infinite] flex items-center justify-center mx-auto">
+                      <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center">
+                        <span className="text-2xl">🌍</span>
+                      </div>
+                    </div>
+                    <h2 className="text-xl font-bold text-zinc-300">System Online</h2>
+                    <p className="font-medium text-zinc-500">No active dispatches. Ready to broadcast.</p>
+                  </div>
+                ) : (
                   <div className="space-y-6 opacity-60">
                     <div className="w-16 h-16 border-4 border-zinc-700 border-t-rose-500 rounded-full animate-spin mx-auto"></div>
                     <p className="font-medium text-zinc-400">
@@ -282,7 +292,7 @@ export default function HospitalDashboard({
                   Activity log will appear here once you process donations.
                 </p>
               </div>
-            ) : requestStatus === "IDLE" ? (<div className="space-y-4 opacity-60"><div className="w-20 h-20 bg-zinc-700/20 rounded-full flex items-center justify-center mx-auto"><span className="text-3xl">??</span></div><p className="font-medium text-zinc-400">Radar Standby</p></div>) : (
+            ) : (
               <div className="space-y-4">
                 {history.map((record) => (
                   <div
