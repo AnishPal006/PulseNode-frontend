@@ -169,7 +169,7 @@ export default function HospitalDashboard({
   };
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-4">
       <header className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 space-y-4 md:space-y-0">
         <div>
           <h1 className="text-4xl font-extrabold text-zinc-900 tracking-tight">
@@ -194,10 +194,10 @@ export default function HospitalDashboard({
         </div>
       </header>
 
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 lg:col-span-8 space-y-6">
-          <div className="grid grid-cols-3 gap-6">
-            <div className="bg-white rounded-[32px] p-6 shadow-sm border border-zinc-100 relative overflow-hidden group">
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-12 lg:col-span-8 space-y-4">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white rounded-[32px] p-4 shadow-sm border border-zinc-100 relative overflow-hidden group">
               <h3 className="text-zinc-500 font-bold mb-4">Total Requests</h3>
               <div className="flex items-end space-x-1">
                 <span className="text-5xl font-extrabold text-zinc-900 tracking-tighter">
@@ -207,7 +207,7 @@ export default function HospitalDashboard({
               <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl group-hover:bg-blue-400/20 transition-all"></div>
             </div>
 
-            <div className="bg-white rounded-[32px] p-6 shadow-sm border border-zinc-100 relative overflow-hidden group">
+            <div className="bg-white rounded-[32px] p-4 shadow-sm border border-zinc-100 relative overflow-hidden group">
               <h3 className="text-zinc-500 font-bold mb-4">Fulfillment Rate</h3>
               <div className="flex items-end space-x-1">
                 <span className="text-5xl font-extrabold text-zinc-900 tracking-tighter">
@@ -218,7 +218,7 @@ export default function HospitalDashboard({
               <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-lime-400/20 rounded-full blur-2xl group-hover:bg-lime-400/30 transition-all"></div>
             </div>
 
-            <div className="bg-white rounded-[32px] p-6 shadow-sm border border-zinc-100 relative overflow-hidden group">
+            <div className="bg-white rounded-[32px] p-4 shadow-sm border border-zinc-100 relative overflow-hidden group">
               <h3 className="text-zinc-500 font-bold mb-4">Active Donors</h3>
               <div className="flex items-end space-x-1">
                 <span className="text-5xl font-extrabold text-zinc-900 tracking-tighter">
@@ -234,7 +234,7 @@ export default function HospitalDashboard({
 
           <HospitalCharts />
 
-          <div className="bg-[#151515] rounded-[32px] p-8 text-white shadow-xl relative overflow-hidden min-h-[500px] mt-6">
+          <div className="bg-[#151515] rounded-[32px] p-5 text-white shadow-xl relative overflow-hidden h-[320px] mt-6">
             <div className="relative z-10 flex flex-col h-full">
               <h3 className="text-zinc-400 font-bold mb-6 flex justify-between items-center">
                 <span>Active Emergency Dispatch</span>
@@ -381,7 +381,7 @@ export default function HospitalDashboard({
                     </p>
                   </div>
                 ) : (
-                  <div className="space-y-6 opacity-60">
+                  <div className="space-y-4 opacity-60">
                     <div className="w-16 h-16 border-4 border-zinc-700 border-t-rose-500 rounded-full animate-spin mx-auto"></div>
                     <p className="font-medium text-zinc-400">
                       Broadcasting SOS to local radar...
@@ -397,8 +397,8 @@ export default function HospitalDashboard({
           </div>
         </div>
 
-        <div className="col-span-12 lg:col-span-4 space-y-6">
-          <div className="bg-white rounded-[32px] p-8 shadow-sm border border-zinc-100 h-full overflow-y-auto">
+        <div className="col-span-12 lg:col-span-4 space-y-4">
+          <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 h-full overflow-y-auto">
             <h3 className="text-xl font-extrabold text-zinc-900 mb-6 flex justify-between items-center">
               <span>Recent Activity</span>
             </h3>

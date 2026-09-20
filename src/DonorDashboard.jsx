@@ -190,7 +190,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
 
   if (activeTab === "history") {
     return (
-      <div className="w-full space-y-6">
+      <div className="w-full space-y-4">
         {renderHeader("Donation History", "Your lifesaving journey in detail.")}
         <div className="bg-white rounded-[32px] p-10 shadow-sm border border-zinc-100 min-h-[600px]">
           {history.length === 0 ? (
@@ -210,7 +210,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
               {history.map((record) => (
                 <div
                   key={record.recordId}
-                  className="flex flex-col md:flex-row items-start md:items-center justify-between p-6 rounded-3xl hover:bg-zinc-50 transition border border-zinc-100 space-y-4 md:space-y-0"
+                  className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 rounded-3xl hover:bg-zinc-50 transition border border-zinc-100 space-y-4 md:space-y-0"
                 >
                   <div className="flex items-center space-x-4 md:space-x-6">
                     <div className="w-14 h-14 shrink-0 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center font-extrabold text-xl">
@@ -249,11 +249,11 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
 
   if (activeTab === "rewards") {
     return (
-      <div className="w-full space-y-6">
+      <div className="w-full space-y-4">
         {renderHeader("Your Rewards", "Unlock perks for saving lives.")}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4">
           <div
-            className={`p-8 rounded-[32px] border-2 shadow-sm relative overflow-hidden transition-all ${donorDetails?.rewardTier === "Bronze" || donorDetails?.rewardTier === "Silver" || donorDetails?.rewardTier === "Gold" ? "border-[#cd7f32] bg-orange-50" : "border-zinc-100 bg-white opacity-50"}`}
+            className={`p-5 rounded-[32px] border-2 shadow-sm relative overflow-hidden transition-all ${donorDetails?.rewardTier === "Bronze" || donorDetails?.rewardTier === "Silver" || donorDetails?.rewardTier === "Gold" ? "border-[#cd7f32] bg-orange-50" : "border-zinc-100 bg-white opacity-50"}`}
           >
             <h3 className="text-[#cd7f32] font-extrabold text-2xl mb-2">
               Bronze Tier
@@ -265,7 +265,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
             </ul>
           </div>
           <div
-            className={`p-8 rounded-[32px] border-2 shadow-sm relative overflow-hidden transition-all ${donorDetails?.rewardTier === "Silver" || donorDetails?.rewardTier === "Gold" ? "border-zinc-400 bg-zinc-50" : "border-zinc-100 bg-white opacity-50"}`}
+            className={`p-5 rounded-[32px] border-2 shadow-sm relative overflow-hidden transition-all ${donorDetails?.rewardTier === "Silver" || donorDetails?.rewardTier === "Gold" ? "border-zinc-400 bg-zinc-50" : "border-zinc-100 bg-white opacity-50"}`}
           >
             <h3 className="text-zinc-600 font-extrabold text-2xl mb-2">
               Silver Tier
@@ -277,7 +277,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
             </ul>
           </div>
           <div
-            className={`p-8 rounded-[32px] border-2 shadow-sm relative overflow-hidden transition-all ${donorDetails?.rewardTier === "Gold" ? "border-amber-400 bg-amber-50" : "border-zinc-100 bg-white opacity-50"}`}
+            className={`p-5 rounded-[32px] border-2 shadow-sm relative overflow-hidden transition-all ${donorDetails?.rewardTier === "Gold" ? "border-amber-400 bg-amber-50" : "border-zinc-100 bg-white opacity-50"}`}
           >
             <h3 className="text-amber-600 font-extrabold text-2xl mb-2">
               Gold Tier
@@ -294,14 +294,14 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
   }
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-4">
       {renderHeader("Donor Overview", "Take control of your impact today!")}
 
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-12 gap-4">
         {/* Main Stats Block */}
-        <div className="col-span-12 lg:col-span-8 space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-            <div className="bg-white rounded-[32px] p-8 shadow-sm border border-zinc-100 relative overflow-hidden group">
+        <div className="col-span-12 lg:col-span-8 space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-4">
+            <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 relative overflow-hidden group">
               <h3 className="text-zinc-500 font-bold mb-4 flex justify-between items-center">
                 <span>Total Donations</span>
                 <span className="text-xs bg-lime-100 text-lime-700 px-2 py-1 rounded-full">
@@ -319,7 +319,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
               <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-lime-400/20 rounded-full blur-3xl group-hover:bg-lime-400/30 transition-all"></div>
             </div>
 
-            <div className="bg-white rounded-[32px] p-8 shadow-sm border border-zinc-100 relative overflow-hidden group">
+            <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 relative overflow-hidden group">
               <h3 className="text-zinc-500 font-bold mb-4 flex justify-between items-center">
                 <span>Reward Tier</span>
                 <span className="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded-full">
@@ -337,7 +337,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
 
           <DonorCharts />
 
-          <div className="bg-white rounded-[32px] p-8 shadow-sm border border-zinc-100 mt-6">
+          <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 mt-6">
             <h3 className="text-xl font-extrabold text-zinc-900 mb-6">
               Active Emergencies
             </h3>
@@ -355,7 +355,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
                 {alerts.map((alert, index) => (
                   <div
                     key={alert.requestId}
-                    className="bg-rose-50 border border-rose-100 p-4 md:p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0"
+                    className="bg-rose-50 border border-rose-100 p-4 md:p-4 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0"
                   >
                     <div>
                       <div className="flex items-center space-x-3 mb-2">
@@ -414,8 +414,8 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
         </div>
 
         {/* Right Sidebar */}
-        <div className="col-span-12 lg:col-span-4 space-y-6">
-          <div className="bg-[#151515] rounded-[32px] p-8 text-white shadow-xl relative overflow-hidden">
+        <div className="col-span-12 lg:col-span-4 space-y-4">
+          <div className="bg-[#151515] rounded-[32px] p-5 text-white shadow-xl relative overflow-hidden">
             <div className="relative z-10">
               <h3 className="text-zinc-400 font-bold mb-6 flex justify-between items-center">
                 <span>Next Eligible Date</span>
@@ -463,7 +463,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
             <div className="absolute top-0 right-0 w-32 h-32 bg-lime-400/10 rounded-full blur-3xl"></div>
           </div>
 
-          <div className="bg-white rounded-[32px] p-8 shadow-sm border border-zinc-100 h-[400px] overflow-y-auto">
+          <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 h-[400px] overflow-y-auto">
             <h3 className="text-xl font-extrabold text-zinc-900 mb-6 flex items-center justify-between">
               <span>History</span>
               <span className="text-sm text-zinc-400 font-bold hover:text-zinc-800 cursor-pointer transition">

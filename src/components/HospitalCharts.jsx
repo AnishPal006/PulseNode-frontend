@@ -50,7 +50,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 export default function HospitalCharts() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
       {/* Inventory Bar Chart */}
       <div className="bg-white rounded-[32px] p-6 shadow-sm border border-zinc-100">
         <div className="flex items-center justify-between mb-6">

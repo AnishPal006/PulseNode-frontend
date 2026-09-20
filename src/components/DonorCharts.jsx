@@ -18,7 +18,7 @@ const leaderboard = [
 
 export default function DonorCharts() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
       {/* Impact Distribution Pie Chart */}
       <div className="bg-white rounded-[32px] p-6 shadow-sm border border-zinc-100">
         <h3 className="text-zinc-900 font-extrabold text-xl tracking-tight mb-2">
