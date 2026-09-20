@@ -9,7 +9,7 @@ export default function HospitalDashboard({
   initialRequestId,
   hospitalName,
 }) {
-  const [requestStatus, setRequestStatus] = useState("open");
+  const [requestStatus, setRequestStatus] = useState(initialRequestId ? "open" : "IDLE");
   const [matchMessage, setMatchMessage] = useState("");
   const [connected, setConnected] = useState(false);
   const [analytics, setAnalytics] = useState(null);
@@ -30,7 +30,7 @@ export default function HospitalDashboard({
     // Fetch Hospital History
     axios
       .get(`${API_BASE_URL}/api/hospitals/${requesterId}/history`)
-      .then((res) => setHistory(res.data))
+      .then((res) => { setHistory(res.data); if (!initialRequestId && res.data.length > 0) { const active = res.data.find(r => r.status === "pending" || r.status === "matched"); if (active) { setCurrentRequestId(active.requestId); setRequestStatus(active.status === "matched" ? "MATCHED" : "open"); if (active.status === "matched") setMatchMessage("Match Confirmed: Donor is assigned"); } } })
       .catch((err) => console.error("Failed to fetch history", err));
 
     const socket = new SockJS(`${API_BASE_URL}/ws-blood-donation`);
@@ -215,7 +215,7 @@ export default function HospitalDashboard({
                       ? "Mission Complete"
                       : requestStatus === "CANCELLED"
                         ? "Cancelled"
-                        : "Open - Searching"}
+                        : requestStatus === "IDLE" ? "Standby" : "Open - Searching"}
                 </span>
 
                 {matchMessage &&
@@ -250,7 +250,7 @@ export default function HospitalDashboard({
                       Request Cancelled
                     </h2>
                   </div>
-                ) : (
+                ) : requestStatus === "IDLE" ? (<div className="space-y-4 opacity-60"><div className="w-20 h-20 bg-zinc-700/20 rounded-full flex items-center justify-center mx-auto"><span className="text-3xl">??</span></div><p className="font-medium text-zinc-400">Radar Standby</p></div>) : (
                   <div className="space-y-6 opacity-60">
                     <div className="w-16 h-16 border-4 border-zinc-700 border-t-rose-500 rounded-full animate-spin mx-auto"></div>
                     <p className="font-medium text-zinc-400">
@@ -282,7 +282,7 @@ export default function HospitalDashboard({
                   Activity log will appear here once you process donations.
                 </p>
               </div>
-            ) : (
+            ) : requestStatus === "IDLE" ? (<div className="space-y-4 opacity-60"><div className="w-20 h-20 bg-zinc-700/20 rounded-full flex items-center justify-center mx-auto"><span className="text-3xl">??</span></div><p className="font-medium text-zinc-400">Radar Standby</p></div>) : (
               <div className="space-y-4">
                 {history.map((record) => (
                   <div

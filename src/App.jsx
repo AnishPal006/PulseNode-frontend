@@ -152,7 +152,6 @@ export default function App() {
 
         {/* Right Side: Login Panel */}
         <div className="w-full lg:w-[45%] flex flex-col items-center justify-center p-4 md:p-8 bg-zinc-50 relative overflow-y-auto">
-          
           {/* Mobile Hero (Hidden on Desktop) */}
           <div className="lg:hidden text-center mb-8 mt-4 w-full px-4">
             <h1 className="text-4xl font-extrabold tracking-tighter mb-2">
