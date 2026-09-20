@@ -30,7 +30,7 @@ export default function HospitalDashboard({
     // Fetch Hospital History
     axios
       .get(`${API_BASE_URL}/api/hospitals/${requesterId}/history`)
-      .then((res) => { setHistory(res.data); if (!initialRequestId && res.data.length > 0) { const active = res.data.find(r => r.status === "pending" || r.status === "matched"); if (active) { setCurrentRequestId(active.requestId); setRequestStatus(active.status === "matched" ? "MATCHED" : "open"); if (active.status === "matched") setMatchMessage("Match Confirmed: Donor is assigned"); } } })
+      .then((res) => { setHistory(res.data); if (!initialRequestId && res.data.length > 0) { const active = res.data.find(r => r.status === "open"); if (active) { setCurrentRequestId(active.requestId); setRequestStatus("open");  } } })
       .catch((err) => console.error("Failed to fetch history", err));
 
     const socket = new SockJS(`${API_BASE_URL}/ws-blood-donation`);

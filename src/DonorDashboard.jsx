@@ -1,17 +1,17 @@
 import { API_BASE_URL } from "./config";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
 import MapView from "./Map";
 
 export default function DonorDashboard({ donorId, donorName, activeTab }) {
-  const [alerts, setAlerts] = useState([]);
+  const [alerts, setAlerts] = useState([]); const declinedIds = React.useRef(new Set()); const donorDetailsRef = React.useRef(null);
     useEffect(() => {
       const fetchActive = () => {
         axios.get(API_BASE_URL + '/api/requests/active')
           .then(res => {
-            setAlerts(res.data.map(r => ({ requestId: r.requestId, bloodType: r.bloodTypeNeeded, urgency: r.urgencyLevel, message: 'Urgent match nearby!' })));
+            const valid = res.data.filter(r => !declinedIds.current.has(r.requestId) && (!donorDetailsRef.current || r.bloodTypeNeeded === donorDetailsRef.current.bloodType)); setAlerts(valid.map(r => ({ requestId: r.requestId, bloodType: r.bloodTypeNeeded, urgency: r.urgencyLevel, message: "Urgent match nearby!" })));
           });
       };
       fetchActive();
@@ -26,7 +26,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
     // Fetch donor details
     axios
       .get(`${API_BASE_URL}/api/donors/${donorId}`)
-      .then((res) => { setDonorDetails(res.data);  })
+      .then((res) => { setDonorDetails(res.data); donorDetailsRef.current = res.data; })
       .catch((err) => console.error("Failed to fetch donor details", err));
 
     // Fetch history
@@ -324,7 +324,7 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
               <MapView
                 onAccept={handleAccept}
                 onDecline={(requestId) =>
-                  setAlerts(alerts.filter((a) => a.requestId !== requestId))
+                  { declinedIds.current.add(requestId); setAlerts(alerts.filter((a) => a.requestId !== requestId)); }
                 }
               />
             </div>
