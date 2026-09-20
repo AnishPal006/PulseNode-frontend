@@ -13,12 +13,14 @@ export default function App() {
   const [currentView, setCurrentView] = useState(() => localStorage.getItem("currentView") || "login"); // login | donor | requester | admin
   const [userId, setUserId] = useState(() => localStorage.getItem("userId") ? parseInt(localStorage.getItem("userId")) : null);
   const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '');
+  const [activeTab, setActiveTab] = useState(() => localStorage.getItem('activeTab') || 'dashboard');
 
   useEffect(() => {
     localStorage.setItem('currentView', currentView);
     if (userId) localStorage.setItem('userId', userId); else localStorage.removeItem('userId');
     localStorage.setItem('userName', userName);
-  }, [currentView, userId, userName]);
+    localStorage.setItem('activeTab', activeTab);
+  }, [currentView, userId, userName, activeTab]);
 
   // Used when profile is incomplete
   const [tempUser, setTempUser] = useState(null);
@@ -98,7 +100,7 @@ export default function App() {
     setTempUser(null);
   };
 
-  const [activeTab, setActiveTab] = useState("dashboard");
+  
 
   if (tempUser) {
     return (
