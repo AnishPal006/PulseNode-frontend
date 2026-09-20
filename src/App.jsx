@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "./config";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import DonorDashboard from "./DonorDashboard";
 import SubmitRequest from "./SubmitRequest";
@@ -10,9 +10,15 @@ import Sidebar from "./Sidebar";
 import { useGoogleLogin } from "@react-oauth/google";
 
 export default function App() {
-  const [currentView, setCurrentView] = useState("login"); // login | donor | requester | admin
-  const [userId, setUserId] = useState(null);
-  const [userName, setUserName] = useState("");
+  const [currentView, setCurrentView] = useState(() => localStorage.getItem("currentView") || "login"); // login | donor | requester | admin
+  const [userId, setUserId] = useState(() => localStorage.getItem("userId") ? parseInt(localStorage.getItem("userId")) : null);
+  const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '');
+
+  useEffect(() => {
+    localStorage.setItem('currentView', currentView);
+    if (userId) localStorage.setItem('userId', userId); else localStorage.removeItem('userId');
+    localStorage.setItem('userName', userName);
+  }, [currentView, userId, userName]);
 
   // Used when profile is incomplete
   const [tempUser, setTempUser] = useState(null);

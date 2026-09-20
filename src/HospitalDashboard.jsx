@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config';
+import { API_BASE_URL } from "./config";
 import { useState, useEffect } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -9,7 +9,9 @@ export default function HospitalDashboard({
   initialRequestId,
   hospitalName,
 }) {
-  const [requestStatus, setRequestStatus] = useState(initialRequestId ? "open" : "IDLE");
+  const [requestStatus, setRequestStatus] = useState(
+    initialRequestId ? "open" : "IDLE",
+  );
   const [matchMessage, setMatchMessage] = useState("");
   const [connected, setConnected] = useState(false);
   const [analytics, setAnalytics] = useState(null);
@@ -30,7 +32,16 @@ export default function HospitalDashboard({
     // Fetch Hospital History
     axios
       .get(`${API_BASE_URL}/api/hospitals/${requesterId}/history`)
-      .then((res) => { setHistory(res.data); if (!initialRequestId && res.data.length > 0) { const active = res.data.find(r => r.status === "open"); if (active) { setCurrentRequestId(active.requestId); setRequestStatus("open");  } } })
+      .then((res) => {
+        setHistory(res.data);
+        if (!initialRequestId && res.data.length > 0) {
+          const active = res.data.find((r) => r.status === "open");
+          if (active) {
+            setCurrentRequestId(active.requestId);
+            setRequestStatus("open");
+          }
+        }
+      })
       .catch((err) => console.error("Failed to fetch history", err));
 
     const socket = new SockJS(`${API_BASE_URL}/ws-blood-donation`);
@@ -103,9 +114,7 @@ export default function HospitalDashboard({
 
   const handleCancelRequest = async (requestId) => {
     try {
-      await axios.post(
-        `${API_BASE_URL}/api/requests/${requestId}/cancel`,
-      );
+      await axios.post(`${API_BASE_URL}/api/requests/${requestId}/cancel`);
       // refresh history
       const histRes = await axios.get(
         `${API_BASE_URL}/api/hospitals/${requesterId}/history`,
@@ -215,7 +224,9 @@ export default function HospitalDashboard({
                       ? "Mission Complete"
                       : requestStatus === "CANCELLED"
                         ? "Cancelled"
-                        : requestStatus === "IDLE" ? "Standby" : "Open - Searching"}
+                        : requestStatus === "IDLE"
+                          ? "Standby"
+                          : "Open - Searching"}
                 </span>
 
                 {matchMessage &&
@@ -257,8 +268,12 @@ export default function HospitalDashboard({
                         <span className="text-2xl">🌍</span>
                       </div>
                     </div>
-                    <h2 className="text-xl font-bold text-zinc-300">System Online</h2>
-                    <p className="font-medium text-zinc-500">No active dispatches. Ready to broadcast.</p>
+                    <h2 className="text-xl font-bold text-zinc-300">
+                      System Online
+                    </h2>
+                    <p className="font-medium text-zinc-500">
+                      No active dispatches. Ready to broadcast.
+                    </p>
                   </div>
                 ) : (
                   <div className="space-y-6 opacity-60">
