@@ -11,19 +11,31 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
   const [alerts, setAlerts] = useState([]);
   const [achievementData, setAchievementData] = useState(null);
   const [showHeroCard, setShowHeroCard] = useState(false);
-  const declinedIds = React.useRef(new Set()); 
+  const declinedIds = React.useRef(new Set());
   const donorDetailsRef = React.useRef(null);
-    useEffect(() => {
-      const fetchActive = () => {
-        axios.get(API_BASE_URL + '/api/requests/active')
-          .then(res => {
-            const valid = res.data.filter(r => !declinedIds.current.has(r.requestId) && (!donorDetailsRef.current || r.bloodTypeNeeded === donorDetailsRef.current.bloodType)); setAlerts(valid.map(r => ({ requestId: r.requestId, bloodType: r.bloodTypeNeeded, urgency: r.urgencyLevel, message: "Urgent match nearby!" })));
-          });
-      };
-      fetchActive();
-      const intId = setInterval(fetchActive, 3000);
-      return () => clearInterval(intId);
-    }, []);
+  useEffect(() => {
+    const fetchActive = () => {
+      axios.get(API_BASE_URL + "/api/requests/active").then((res) => {
+        const valid = res.data.filter(
+          (r) =>
+            !declinedIds.current.has(r.requestId) &&
+            (!donorDetailsRef.current ||
+              r.bloodTypeNeeded === donorDetailsRef.current.bloodType),
+        );
+        setAlerts(
+          valid.map((r) => ({
+            requestId: r.requestId,
+            bloodType: r.bloodTypeNeeded,
+            urgency: r.urgencyLevel,
+            message: "Urgent match nearby!",
+          })),
+        );
+      });
+    };
+    fetchActive();
+    const intId = setInterval(fetchActive, 3000);
+    return () => clearInterval(intId);
+  }, []);
   const [connected, setConnected] = useState(false);
   const [donorDetails, setDonorDetails] = useState(null);
   const [history, setHistory] = useState([]);
@@ -32,7 +44,10 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
     // Fetch donor details
     axios
       .get(`${API_BASE_URL}/api/donors/${donorId}`)
-      .then((res) => { setDonorDetails(res.data); donorDetailsRef.current = res.data; })
+      .then((res) => {
+        setDonorDetails(res.data);
+        donorDetailsRef.current = res.data;
+      })
       .catch((err) => console.error("Failed to fetch donor details", err));
 
     // Fetch history
@@ -50,40 +65,58 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
           const newAlert = JSON.parse(message.body);
           setAlerts((prev) => [...prev, newAlert]);
         });
-        
+
         // Listen for achievements
         stompClient.subscribe(`/topic/donors/${donorId}/achievements`, (message) => {
-          const data = JSON.parse(message.body);
-          if (data.type === "DONATION_COMPLETED") {
-            setAchievementData(data);
-            setShowHeroCard(true);
-            
-            // Trigger confetti
-            var duration = 3 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+          console.log("RECEIVED ACHIEVEMENT MESSAGE:", message.body);
+          try {
+            const data = JSON.parse(message.body);
+            if (data.type === "DONATION_COMPLETED") {
+              setAchievementData(data);
+              setShowHeroCard(true);
 
-            function randomInRange(min, max) {
-              return Math.random() * (max - min) + min;
-            }
+              // Trigger confetti
+              var duration = 3 * 1000;
+              var animationEnd = Date.now() + duration;
+              var defaults = {
+                startVelocity: 30,
+                spread: 360,
+                ticks: 60,
+                zIndex: 100,
+              };
 
-            var interval = setInterval(function() {
-              var timeLeft = animationEnd - Date.now();
-
-              if (timeLeft <= 0) {
-                return clearInterval(interval);
+              function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
               }
 
-              var particleCount = 50 * (timeLeft / duration);
-              confetti({
-                ...defaults, particleCount,
-                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-              });
-              confetti({
-                ...defaults, particleCount,
-                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-              });
-            }, 250);
+              var interval = setInterval(function () {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                  return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti({
+                  ...defaults,
+                  particleCount,
+                  origin: {
+                    x: randomInRange(0.1, 0.3),
+                    y: Math.random() - 0.2,
+                  },
+                });
+                confetti({
+                  ...defaults,
+                  particleCount,
+                  origin: {
+                    x: randomInRange(0.7, 0.9),
+                    y: Math.random() - 0.2,
+                  },
+                });
+              }, 250);
+            }
+          } catch (e) {
+            console.error("Failed to parse achievement message", e);
           }
         });
       },
@@ -365,9 +398,10 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
             <div className="overflow-hidden rounded-[32px] shadow-sm border border-zinc-100">
               <MapView
                 onAccept={handleAccept}
-                onDecline={(requestId) =>
-                  { declinedIds.current.add(requestId); setAlerts(alerts.filter((a) => a.requestId !== requestId)); }
-                }
+                onDecline={(requestId) => {
+                  declinedIds.current.add(requestId);
+                  setAlerts(alerts.filter((a) => a.requestId !== requestId));
+                }}
               />
             </div>
           </div>
@@ -464,11 +498,11 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
           </div>
         </div>
       </div>
-      
-      <HeroCardModal 
-        show={showHeroCard} 
-        onClose={() => setShowHeroCard(false)} 
-        achievementData={achievementData} 
+
+      <HeroCardModal
+        show={showHeroCard}
+        onClose={() => setShowHeroCard(false)}
+        achievementData={achievementData}
       />
     </div>
   );
