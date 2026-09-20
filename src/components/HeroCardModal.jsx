@@ -8,16 +8,26 @@ export default function HeroCardModal({ show, onClose, achievementData }) {
   if (!show || !achievementData) return null;
 
   const handleDownload = async () => {
-    if (cardRef.current) {
-      const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: null, // preserve transparent or rounded edges
-        scale: 2, // better quality
-      });
-      const dataUrl = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = `pulsenode-hero-${achievementData.donorName.replace(/\s+/g, "-").toLowerCase()}.png`;
-      link.click();
+    try {
+      if (cardRef.current) {
+        // Temporarily change styling if needed, html2canvas handles most things
+        const canvas = await html2canvas(cardRef.current, {
+          backgroundColor: null, // preserve transparent or rounded edges
+          scale: 2, // better quality
+          useCORS: true, // sometimes needed for external fonts/styles
+        });
+        const dataUrl = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        const nameStr = achievementData.donorName ? achievementData.donorName : "hero";
+        link.download = `pulsenode-${nameStr.replace(/\s+/g, "-").toLowerCase()}.png`;
+        document.body.appendChild(link); // Required in some browsers
+        link.click();
+        document.body.removeChild(link); // Clean up
+      }
+    } catch (err) {
+      console.error("Failed to download image:", err);
+      alert("Failed to generate image. Please try again.");
     }
   };
 

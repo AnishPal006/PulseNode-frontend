@@ -67,58 +67,61 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
         });
 
         // Listen for achievements
-        stompClient.subscribe(`/topic/donors/${donorId}/achievements`, (message) => {
-          console.log("RECEIVED ACHIEVEMENT MESSAGE:", message.body);
-          try {
-            const data = JSON.parse(message.body);
-            if (data.type === "DONATION_COMPLETED") {
-              setAchievementData(data);
-              setShowHeroCard(true);
+        stompClient.subscribe(
+          `/topic/donors/${donorId}/achievements`,
+          (message) => {
+            console.log("RECEIVED ACHIEVEMENT MESSAGE:", message.body);
+            try {
+              const data = JSON.parse(message.body);
+              if (data.type === "DONATION_COMPLETED") {
+                setAchievementData(data);
+                setShowHeroCard(true);
 
-              // Trigger confetti
-              var duration = 3 * 1000;
-              var animationEnd = Date.now() + duration;
-              var defaults = {
-                startVelocity: 30,
-                spread: 360,
-                ticks: 60,
-                zIndex: 100,
-              };
+                // Trigger confetti
+                var duration = 3 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = {
+                  startVelocity: 30,
+                  spread: 360,
+                  ticks: 60,
+                  zIndex: 100,
+                };
 
-              function randomInRange(min, max) {
-                return Math.random() * (max - min) + min;
-              }
-
-              var interval = setInterval(function () {
-                var timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                  return clearInterval(interval);
+                function randomInRange(min, max) {
+                  return Math.random() * (max - min) + min;
                 }
 
-                var particleCount = 50 * (timeLeft / duration);
-                confetti({
-                  ...defaults,
-                  particleCount,
-                  origin: {
-                    x: randomInRange(0.1, 0.3),
-                    y: Math.random() - 0.2,
-                  },
-                });
-                confetti({
-                  ...defaults,
-                  particleCount,
-                  origin: {
-                    x: randomInRange(0.7, 0.9),
-                    y: Math.random() - 0.2,
-                  },
-                });
-              }, 250);
+                var interval = setInterval(function () {
+                  var timeLeft = animationEnd - Date.now();
+
+                  if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                  }
+
+                  var particleCount = 50 * (timeLeft / duration);
+                  confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: {
+                      x: randomInRange(0.1, 0.3),
+                      y: Math.random() - 0.2,
+                    },
+                  });
+                  confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: {
+                      x: randomInRange(0.7, 0.9),
+                      y: Math.random() - 0.2,
+                    },
+                  });
+                }, 250);
+              }
+            } catch (e) {
+              console.error("Failed to parse achievement message", e);
             }
-          } catch (e) {
-            console.error("Failed to parse achievement message", e);
-          }
-        });
+          },
+        );
       },
       onStompError: (frame) => {
         console.error("Broker reported error: " + frame.headers["message"]);
