@@ -22,6 +22,7 @@ export default function HospitalDashboard({
     initialRequestId ? "open" : "IDLE",
   );
   const [matchMessage, setMatchMessage] = useState("");
+  const [internalTab, setInternalTab] = useState("dispatch");
   const [connected, setConnected] = useState(false);
   const [analytics, setAnalytics] = useState(null);
   const [history, setHistory] = useState([]);
@@ -232,7 +233,27 @@ export default function HospitalDashboard({
             </div>
           </div>
 
-          <HospitalCharts />
+          
+            <div className="flex bg-zinc-100/80 backdrop-blur-md p-1.5 rounded-2xl w-max mt-2">
+              <button
+                onClick={() => setInternalTab("dispatch")}
+                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "dispatch" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
+              >
+                Live Dispatch
+              </button>
+              <button
+                onClick={() => setInternalTab("analytics")}
+                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "analytics" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
+              >
+                Analytics
+              </button>
+            </div>
+
+            {internalTab === "analytics" ? (
+              <HospitalCharts />
+            ) : (
+              <div className="space-y-4">
+
 
           <div className="bg-[#151515] rounded-[32px] p-5 text-white shadow-xl relative overflow-hidden h-[320px] mt-6">
             <div className="relative z-10 flex flex-col h-full">
@@ -396,8 +417,10 @@ export default function HospitalDashboard({
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/5 rounded-full blur-3xl"></div>
           </div>
         </div>
+      )}
+    </div>
 
-        <div className="col-span-12 lg:col-span-4 space-y-4">
+    <div className="col-span-12 lg:col-span-4 space-y-4">
           <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 h-full overflow-y-auto">
             <h3 className="text-xl font-extrabold text-zinc-900 mb-6 flex justify-between items-center">
               <span>Recent Activity</span>

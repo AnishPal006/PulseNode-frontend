@@ -11,6 +11,7 @@ import DonorCharts from "./components/DonorCharts";
 export default function DonorDashboard({ donorId, donorName, activeTab }) {
   const [alerts, setAlerts] = useState([]);
   const [achievementData, setAchievementData] = useState(null);
+  const [internalTab, setInternalTab] = useState("action");
   const [showHeroCard, setShowHeroCard] = useState(false);
   const declinedIds = React.useRef(new Set());
   const donorDetailsRef = React.useRef(null);
@@ -335,7 +336,27 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
             </div>
           </div>
 
-          <DonorCharts />
+          
+            <div className="flex bg-zinc-100/80 backdrop-blur-md p-1.5 rounded-2xl w-max mt-2">
+              <button
+                onClick={() => setInternalTab("action")}
+                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "action" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
+              >
+                Action & Map
+              </button>
+              <button
+                onClick={() => setInternalTab("impact")}
+                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${internalTab === "impact" ? "bg-white shadow-sm text-zinc-900" : "text-zinc-500 hover:text-zinc-700"}`}
+              >
+                Impact & Heroes
+              </button>
+            </div>
+
+            {internalTab === "impact" ? (
+              <DonorCharts />
+            ) : (
+              <div className="space-y-4">
+
 
           <div className="bg-white rounded-[32px] p-5 shadow-sm border border-zinc-100 mt-6">
             <h3 className="text-xl font-extrabold text-zinc-900 mb-6">
@@ -411,6 +432,8 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
               />
             </div>
           </div>
+          </div>
+          )}
         </div>
 
         {/* Right Sidebar */}
