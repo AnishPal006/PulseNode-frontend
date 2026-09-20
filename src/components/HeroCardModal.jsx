@@ -10,10 +10,15 @@ export default function HeroCardModal({ show, onClose, achievementData }) {
   const handleDownload = async () => {
     try {
       if (cardRef.current) {
-        const dataUrl = await htmlToImage.toPng(cardRef.current, { quality: 1.0, pixelRatio: 2 });
+        const dataUrl = await htmlToImage.toPng(cardRef.current, {
+          quality: 1.0,
+          pixelRatio: 2,
+        });
         const link = document.createElement("a");
         link.href = dataUrl;
-        const nameStr = achievementData.donorName ? achievementData.donorName : "hero";
+        const nameStr = achievementData.donorName
+          ? achievementData.donorName
+          : "hero";
         link.download = `pulsenode-${nameStr.replace(/\s+/g, "-").toLowerCase()}.png`;
         document.body.appendChild(link); // Required in some browsers
         link.click();
