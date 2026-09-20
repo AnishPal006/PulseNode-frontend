@@ -86,7 +86,7 @@ export default function HospitalDashboard({
             if (response.donorId) {
               setMatchedDonorId(response.donorId);
             }
-            
+
             // Just use the coordinates and distance passed in the matched event payload!
             if (response.donorLat && response.hospLat) {
               setTrackingData({
@@ -94,7 +94,7 @@ export default function HospitalDashboard({
                 longitude: response.donorLng,
                 hospLat: response.hospLat,
                 hospLng: response.hospLng,
-                distanceKm: response.distanceKm
+                distanceKm: response.distanceKm,
               });
             }
           }
@@ -309,10 +309,7 @@ export default function HospitalDashboard({
                             <Polyline
                               positions={[
                                 [trackingData.latitude, trackingData.longitude],
-                                [
-                                  trackingData.hospLat,
-                                  trackingData.hospLng,
-                                ],
+                                [trackingData.hospLat, trackingData.hospLng],
                               ]}
                               color="#a3e635"
                               dashArray="10, 10"

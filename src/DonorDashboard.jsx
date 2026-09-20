@@ -4,9 +4,15 @@ import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
 import MapView from "./Map";
+import confetti from "canvas-confetti";
+import HeroCardModal from "./components/HeroCardModal";
 
 export default function DonorDashboard({ donorId, donorName, activeTab }) {
-  const [alerts, setAlerts] = useState([]); const declinedIds = React.useRef(new Set()); const donorDetailsRef = React.useRef(null);
+  const [alerts, setAlerts] = useState([]);
+  const [achievementData, setAchievementData] = useState(null);
+  const [showHeroCard, setShowHeroCard] = useState(false);
+  const declinedIds = React.useRef(new Set()); 
+  const donorDetailsRef = React.useRef(null);
     useEffect(() => {
       const fetchActive = () => {
         axios.get(API_BASE_URL + '/api/requests/active')
@@ -43,6 +49,42 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
         stompClient.subscribe(`/topic/alerts/${donorId}`, (message) => {
           const newAlert = JSON.parse(message.body);
           setAlerts((prev) => [...prev, newAlert]);
+        });
+        
+        // Listen for achievements
+        stompClient.subscribe(`/topic/donors/${donorId}/achievements`, (message) => {
+          const data = JSON.parse(message.body);
+          if (data.type === "DONATION_COMPLETED") {
+            setAchievementData(data);
+            setShowHeroCard(true);
+            
+            // Trigger confetti
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              confetti({
+                ...defaults, particleCount,
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+              });
+              confetti({
+                ...defaults, particleCount,
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+              });
+            }, 250);
+          }
         });
       },
       onStompError: (frame) => {
@@ -422,6 +464,12 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
           </div>
         </div>
       </div>
+      
+      <HeroCardModal 
+        show={showHeroCard} 
+        onClose={() => setShowHeroCard(false)} 
+        achievementData={achievementData} 
+      />
     </div>
   );
 }
