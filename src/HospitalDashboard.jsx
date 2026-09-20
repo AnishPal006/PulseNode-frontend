@@ -11,6 +11,7 @@ import {
   Polyline,
 } from "react-leaflet";
 import L from "leaflet";
+import HospitalCharts from "./components/HospitalCharts";
 
 export default function HospitalDashboard({
   requesterId,
@@ -231,7 +232,9 @@ export default function HospitalDashboard({
             </div>
           </div>
 
-          <div className="bg-[#151515] rounded-[32px] p-8 text-white shadow-xl relative overflow-hidden min-h-[500px]">
+          <HospitalCharts />
+
+          <div className="bg-[#151515] rounded-[32px] p-8 text-white shadow-xl relative overflow-hidden min-h-[500px] mt-6">
             <div className="relative z-10 flex flex-col h-full">
               <h3 className="text-zinc-400 font-bold mb-6 flex justify-between items-center">
                 <span>Active Emergency Dispatch</span>

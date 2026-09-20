@@ -6,6 +6,7 @@ import axios from "axios";
 import MapView from "./Map";
 import confetti from "canvas-confetti";
 import HeroCardModal from "./components/HeroCardModal";
+import DonorCharts from "./components/DonorCharts";
 
 export default function DonorDashboard({ donorId, donorName, activeTab }) {
   const [alerts, setAlerts] = useState([]);
@@ -334,7 +335,9 @@ export default function DonorDashboard({ donorId, donorName, activeTab }) {
             </div>
           </div>
 
-          <div className="bg-white rounded-[32px] p-8 shadow-sm border border-zinc-100">
+          <DonorCharts />
+
+          <div className="bg-white rounded-[32px] p-8 shadow-sm border border-zinc-100 mt-6">
             <h3 className="text-xl font-extrabold text-zinc-900 mb-6">
               Active Emergencies
             </h3>
