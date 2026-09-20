@@ -3,7 +3,13 @@ import { useState, useEffect, useRef } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+} from "react-leaflet";
 import L from "leaflet";
 
 export default function HospitalDashboard({
@@ -290,25 +296,28 @@ export default function HospitalDashboard({
                             {/* Hospital Marker (approximate static center for now) */}
                             <Marker
                               position={[
-                                trackingData.latitude - 0.01,
-                                trackingData.longitude - 0.01,
+                                trackingData.hospLat,
+                                trackingData.hospLng,
                               ]}
                               icon={hospitalIcon}
                             >
                               <Popup>Hospital</Popup>
                             </Marker>
-                            
-                            <Polyline 
-                                positions={[
-                                  [trackingData.latitude, trackingData.longitude],
-                                  [trackingData.latitude - 0.01, trackingData.longitude - 0.01]
-                                ]} 
-                                color="#a3e635" 
-                                dashArray="10, 10" 
-                                weight={3} 
-                                opacity={0.7} 
+
+                            <Polyline
+                              positions={[
+                                [trackingData.latitude, trackingData.longitude],
+                                [
+                                  trackingData.hospLat,
+                                  trackingData.hospLng,
+                                ],
+                              ]}
+                              color="#a3e635"
+                              dashArray="10, 10"
+                              weight={3}
+                              opacity={0.7}
                             />
-                            
+
                             {/* Donor Moving Marker */}
                             <Marker
                               position={[
