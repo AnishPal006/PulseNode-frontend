@@ -23,6 +23,10 @@ export default function useMotionExperience(rootRef) {
     let scrollFrame = 0;
     const surfaces = [...root.querySelectorAll("[data-pointer-surface]")];
     const zones = [...root.querySelectorAll("[data-motion-zone]")];
+    const scenes = [...root.querySelectorAll("[data-scroll-scene]")];
+    const pinnedLayout = window.matchMedia(
+      "(min-width: 960px) and (min-height: 620px)",
+    );
     const observer = window.IntersectionObserver
       ? new IntersectionObserver((entries) => {
           entries.forEach(({ target, isIntersecting }) => {
@@ -79,6 +83,42 @@ export default function useMotionExperience(rootRef) {
         const progress =
           max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
         root.style.setProperty("--scroll-progress", progress);
+
+        // Read scene geometry together, then write compositor-only transforms.
+        const sceneProgress = scenes.map((scene) => {
+          // offsetTop excludes this scene's animated transform, avoiding feedback
+          // between the scroll measurement and the position it drives.
+          let layoutTop = 0;
+          let ancestor = scene;
+          while (ancestor) {
+            layoutTop += ancestor.offsetTop;
+            ancestor = ancestor.offsetParent;
+          }
+          const top = layoutTop - window.scrollY;
+          let value;
+          if (
+            scene.dataset.scrollScene === "showcase" &&
+            pinnedLayout.matches
+          ) {
+            const stage = scene.querySelector(".scroll-stage");
+            const distance = Math.max(
+              1,
+              scene.offsetHeight - stage.offsetHeight,
+            );
+            value = (88 - top) / distance;
+          } else {
+            value =
+              (window.innerHeight * 0.9 - top) / (window.innerHeight * 0.65);
+          }
+          const bounded = Math.max(0, Math.min(1, value));
+          return bounded * bounded * (3 - 2 * bounded);
+        });
+        scenes.forEach((scene, index) => {
+          scene.style.setProperty(
+            "--scene-progress",
+            sceneProgress[index].toFixed(4),
+          );
+        });
       });
     };
     updateProgress();
@@ -92,6 +132,7 @@ export default function useMotionExperience(rootRef) {
       zones.forEach((zone) => delete zone.dataset.motionVisible);
       delete root.dataset.motionHidden;
       root.style.removeProperty("--scroll-progress");
+      scenes.forEach((scene) => scene.style.removeProperty("--scene-progress"));
       document.removeEventListener("visibilitychange", updateVisibility);
       window.removeEventListener("scroll", updateProgress);
       window.removeEventListener("resize", updateProgress);

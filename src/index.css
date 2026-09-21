@@ -3315,3 +3315,278 @@ select:focus {
     background: none;
   }
 }
+
+/* Scroll choreography. Every scene is a normal, fully visible layout by default. */
+.scroll-showcase {
+  padding-block: 40px 24px;
+}
+.showcase-heading {
+  width: min(800px, calc(100% - 40px));
+  margin: 0 auto 40px;
+  text-align: center;
+}
+.showcase-heading .eyebrow {
+  margin-bottom: 16px;
+}
+.showcase-heading h2 {
+  font-size: clamp(30px, 3.5vw, 46px);
+}
+.showcase-heading h2 > span {
+  display: block;
+}
+.showcase-composition {
+  position: relative;
+  width: min(1200px, calc(100% - 96px));
+  margin-inline: auto;
+}
+.showcase-preview .network-preview {
+  width: 100%;
+  margin-top: 0;
+}
+.showcase-card,
+.showcase-scroll-cue {
+  display: none;
+}
+.light-section {
+  overflow: clip;
+}
+
+/* A single sticky chapter lets the scattered cards converge on the live preview. */
+@media (min-width: 960px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) {
+  [data-motion="on"] .scroll-showcase {
+    height: 175svh;
+    min-height: 1050px;
+    padding-block: 0;
+    --scene-progress: 0;
+  }
+  [data-motion="on"] .scroll-stage {
+    position: sticky;
+    top: 88px;
+    height: calc(100svh - 104px);
+    display: grid;
+    place-items: center;
+    overflow: clip;
+    perspective: 1800px;
+  }
+  [data-motion="on"] .showcase-heading {
+    position: absolute;
+    z-index: 2;
+    top: 18px;
+    left: 50%;
+    margin: 0;
+    transform: translate(-50%, calc(var(--scene-progress) * -65px));
+    opacity: calc(1 - var(--scene-progress) * 2.4);
+    pointer-events: none;
+  }
+  [data-motion="on"] .showcase-heading h2 {
+    font-size: clamp(30px, 3.1vw, 42px);
+  }
+  [data-motion="on"] .showcase-heading .eyebrow {
+    margin-bottom: 12px;
+  }
+  [data-motion="on"] .showcase-preview {
+    transform: translate3d(0, calc((1 - var(--scene-progress)) * 52px), 0)
+      rotateX(calc((1 - var(--scene-progress)) * 12deg))
+      scale(calc(0.72 + var(--scene-progress) * 0.28));
+    transform-origin: center;
+    will-change: transform;
+  }
+  [data-motion="on"] .showcase-card {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 205px;
+    padding: 22px;
+    border: 1px solid #b1a6f64d;
+    border-radius: 24px;
+    background: #232269f5;
+    box-shadow: 0 20px 70px #10104a60;
+    pointer-events: none;
+    opacity: calc(1 - var(--scene-progress) * 1.4);
+    will-change: transform, opacity;
+  }
+  .showcase-card svg {
+    color: var(--color-lilac-mist);
+    margin-bottom: 17px;
+  }
+  .showcase-card span {
+    color: var(--color-ash);
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  .showcase-card strong {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+  }
+  .showcase-card-donors {
+    left: 4%;
+    top: 9%;
+    transform: translate3d(
+        calc(var(--scene-progress) * 160px),
+        calc(var(--scene-progress) * 75px),
+        0
+      )
+      rotate(calc(-9deg + var(--scene-progress) * 9deg))
+      scale(calc(1 - var(--scene-progress) * 0.15));
+  }
+  .showcase-card-hospitals {
+    right: 3%;
+    top: 5%;
+    transform: translate3d(
+        calc(var(--scene-progress) * -160px),
+        calc(var(--scene-progress) * 70px),
+        0
+      )
+      rotate(calc(8deg - var(--scene-progress) * 8deg))
+      scale(calc(1 - var(--scene-progress) * 0.15));
+  }
+  .showcase-card-response {
+    right: 12%;
+    bottom: -3%;
+    transform: translate3d(
+        calc(var(--scene-progress) * -100px),
+        calc(var(--scene-progress) * -115px),
+        0
+      )
+      rotate(calc(-5deg + var(--scene-progress) * 5deg))
+      scale(calc(1 - var(--scene-progress) * 0.15));
+  }
+  [data-motion="on"] .showcase-scroll-cue {
+    position: absolute;
+    bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-ash);
+    font-size: 10px;
+    letter-spacing: 0.015em;
+    opacity: calc(1 - var(--scene-progress));
+    pointer-events: none;
+  }
+  .showcase-scroll-cue > span {
+    width: 72px;
+    height: 2px;
+    margin-left: 8px;
+    background: var(--color-iris-border);
+    overflow: hidden;
+  }
+  .showcase-scroll-cue i {
+    display: block;
+    height: 100%;
+    background: var(--color-lilac-mist);
+    transform-origin: left;
+    transform: scaleX(var(--scene-progress));
+  }
+  /* Keyboard focus always gets a stable, unobscured preview. */
+  [data-motion="on"] .scroll-stage:has(:focus-visible) .showcase-preview {
+    transform: none;
+  }
+  [data-motion="on"] .scroll-stage:has(:focus-visible) .showcase-card,
+  [data-motion="on"] .scroll-stage:has(:focus-visible) .showcase-heading,
+  [data-motion="on"] .scroll-stage:has(:focus-visible) .showcase-scroll-cue {
+    opacity: 0;
+  }
+}
+
+/* The step cards spread from a loose stack into their final grid as you scroll. */
+[data-scroll-scene="card"] {
+  --card-x: 32%;
+  --card-y: 100px;
+  --card-turn: -8deg;
+}
+[data-scroll-scene="card"]:nth-child(2) {
+  --card-x: 0%;
+  --card-y: 150px;
+  --card-turn: 0deg;
+}
+[data-scroll-scene="card"]:nth-child(3) {
+  --card-x: -32%;
+  --card-y: 120px;
+  --card-turn: 8deg;
+}
+[data-motion="on"] [data-scroll-scene="card"] {
+  --scene-progress: 0;
+  transform: translate3d(
+      calc((1 - var(--scene-progress)) * var(--card-x)),
+      calc((1 - var(--scene-progress)) * var(--card-y)),
+      0
+    )
+    rotate(calc((1 - var(--scene-progress)) * var(--card-turn)))
+    scale(calc(0.88 + var(--scene-progress) * 0.12));
+  transition: border-color 300ms ease;
+}
+[data-motion="on"] [data-scroll-scene="network"] .node-one {
+  transform: translate3d(
+    calc((1 - var(--scene-progress, 1)) * 115px),
+    calc((1 - var(--scene-progress, 1)) * 70px),
+    0
+  );
+}
+[data-motion="on"] [data-scroll-scene="network"] .node-two {
+  transform: translate3d(
+    calc((1 - var(--scene-progress, 1)) * -115px),
+    calc((1 - var(--scene-progress, 1)) * 60px),
+    0
+  );
+}
+[data-motion="on"] [data-scroll-scene="network"] .node-three {
+  transform: translate3d(0, calc((1 - var(--scene-progress, 1)) * -100px), 0);
+}
+[data-motion="on"] [data-scroll-scene="network"] .network-node {
+  transition: border-color 250ms ease;
+}
+@media (max-width: 959px), (max-height: 619px) {
+  .showcase-heading {
+    margin-bottom: 32px;
+  }
+  [data-motion="on"] .showcase-preview {
+    transform: translate3d(0, calc((1 - var(--scene-progress, 1)) * 30px), 0)
+      scale(calc(0.94 + var(--scene-progress, 1) * 0.06));
+    transform-origin: top center;
+  }
+}
+@media (max-width: 1100px) {
+  .showcase-composition {
+    width: calc(100% - 64px);
+  }
+}
+@media (max-width: 800px) {
+  [data-scroll-scene="card"] {
+    --card-x: -24px;
+    --card-y: 48px;
+    --card-turn: -3deg;
+  }
+  [data-scroll-scene="card"]:nth-child(2) {
+    --card-x: 24px;
+    --card-y: 48px;
+    --card-turn: 3deg;
+  }
+  [data-scroll-scene="card"]:nth-child(3) {
+    --card-x: -24px;
+    --card-y: 48px;
+    --card-turn: -3deg;
+  }
+}
+@media (max-width: 560px) {
+  .showcase-composition {
+    width: calc(100% - 40px);
+  }
+  .showcase-heading h2 {
+    font-size: 32px;
+  }
+  .showcase-heading .eyebrow {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase-preview,
+  [data-scroll-scene="card"],
+  [data-scroll-scene="network"] .network-node {
+    transform: none !important;
+  }
+}

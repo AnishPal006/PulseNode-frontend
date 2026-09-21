@@ -23,7 +23,7 @@ import {
 import Brand from "./components/Brand";
 import Modal from "./components/Modal";
 import NetworkIllustration from "./components/NetworkIllustration";
-import NetworkPreview from "./components/NetworkPreview";
+import ScrollShowcase from "./components/ScrollShowcase";
 import useScrollReveal from "./hooks/useScrollReveal";
 import useMotionExperience from "./hooks/useMotionExperience";
 import MotionBackdrop from "./components/MotionBackdrop";
@@ -226,7 +226,7 @@ export default function LandingPage({
           </div>
         </section>
 
-        <NetworkPreview onJoin={openLogin} />
+        <ScrollShowcase onJoin={openLogin} />
 
         <section
           className="connection-strip page-width"
@@ -281,7 +281,7 @@ export default function LandingPage({
               </p>
             </div>
             <div className="steps-grid">
-              <article className="step-card" data-reveal>
+              <article className="step-card" data-scroll-scene="card">
                 <div className="step-top">
                   <Fingerprint size={28} strokeWidth={1.5} />
                   <span>01</span>
@@ -295,11 +295,7 @@ export default function LandingPage({
                   <Check size={14} /> A profile that starts with you
                 </div>
               </article>
-              <article
-                className="step-card"
-                data-reveal
-                style={{ "--reveal-delay": "90ms" }}
-              >
+              <article className="step-card" data-scroll-scene="card">
                 <div className="step-top">
                   <Radio size={28} strokeWidth={1.5} />
                   <span>02</span>
@@ -313,11 +309,7 @@ export default function LandingPage({
                   <MapPin size={14} /> Matched within your local area
                 </div>
               </article>
-              <article
-                className="step-card"
-                data-reveal
-                style={{ "--reveal-delay": "180ms" }}
-              >
+              <article className="step-card" data-scroll-scene="card">
                 <div className="step-top">
                   <Heart size={28} strokeWidth={1.5} />
                   <span>03</span>
@@ -374,6 +366,7 @@ export default function LandingPage({
             className="community-diagram"
             data-reveal
             data-motion-zone
+            data-scroll-scene="network"
             aria-hidden="true"
           >
             <div className="network-orbit orbit-outer" />
