@@ -17,12 +17,17 @@ import {
   Users,
   Activity,
   ChevronDown,
+  Pause,
+  Play,
 } from "lucide-react";
 import Brand from "./components/Brand";
 import Modal from "./components/Modal";
 import NetworkIllustration from "./components/NetworkIllustration";
 import NetworkPreview from "./components/NetworkPreview";
 import useScrollReveal from "./hooks/useScrollReveal";
+import useMotionExperience from "./hooks/useMotionExperience";
+import MotionBackdrop from "./components/MotionBackdrop";
+import CreatorCredit from "./components/CreatorCredit";
 
 const questions = [
   [
@@ -59,6 +64,8 @@ export default function LandingPage({
 }) {
   const pageRef = useRef(null);
   useScrollReveal(pageRef);
+  const { paused, reduced, enabled, toggleMotion } =
+    useMotionExperience(pageRef);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [openQuestion, setOpenQuestion] = useState(0);
@@ -68,7 +75,34 @@ export default function LandingPage({
   };
 
   return (
-    <div className="landing-page" ref={pageRef}>
+    <div
+      className="landing-page"
+      ref={pageRef}
+      data-motion={enabled ? "on" : "off"}
+    >
+      <div className="reading-progress" aria-hidden="true" />
+      <button
+        className="motion-toggle"
+        onClick={toggleMotion}
+        disabled={reduced}
+        aria-pressed={paused || reduced}
+        aria-label={
+          reduced
+            ? "Reduced motion enabled in system settings"
+            : paused
+              ? "Resume animations"
+              : "Pause animations"
+        }
+      >
+        {paused || reduced ? <Play size={13} /> : <Pause size={13} />}
+        <span>
+          {reduced
+            ? "Reduced motion"
+            : paused
+              ? "Resume motion"
+              : "Pause motion"}
+        </span>
+      </button>
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
@@ -130,10 +164,18 @@ export default function LandingPage({
       </header>
 
       <main id="main-content">
-        <section className="hero-section" aria-labelledby="hero-title">
+        <section
+          className="hero-section"
+          aria-labelledby="hero-title"
+          data-motion-zone
+          data-pointer-surface
+        >
+          <MotionBackdrop />
           <div className="hero-inner page-width">
             <div className="hero-art">
-              <NetworkIllustration />
+              <div className="hero-art-depth">
+                <NetworkIllustration />
+              </div>
               <span className="schematic-label">
                 <span /> DESIGNED FOR HUMAN CONNECTION
               </span>
@@ -146,7 +188,11 @@ export default function LandingPage({
                 <span className="hero-line">Lifesaving care.</span>
                 <span className="hero-line">Better</span>
                 <span className="hero-line">
-                  <span className="word-highlight">connected.</span>
+                  <span className="word-highlight">
+                    <span className="headline-shimmer motion-loop">
+                      connected.
+                    </span>
+                  </span>
                 </span>
               </h1>
               <p className="hero-description">
@@ -162,6 +208,7 @@ export default function LandingPage({
                   Explore the network <ArrowRight size={18} />
                 </a>
               </div>
+              <CreatorCredit />
               <div className="hero-proof">
                 <span>
                   <ShieldCheck size={15} /> Secure sign-in
@@ -323,7 +370,12 @@ export default function LandingPage({
               Find your place <ArrowUpRight size={18} />
             </button>
           </div>
-          <div className="community-diagram" data-reveal aria-hidden="true">
+          <div
+            className="community-diagram"
+            data-reveal
+            data-motion-zone
+            aria-hidden="true"
+          >
             <div className="network-orbit orbit-outer" />
             <div className="network-orbit orbit-inner" />
             <div className="network-center">
@@ -415,7 +467,8 @@ export default function LandingPage({
           </div>
         </section>
 
-        <section className="join-section">
+        <section className="join-section" data-motion-zone>
+          <div className="join-orbits motion-loop" aria-hidden="true" />
           <div className="page-width" data-reveal>
             <Droplet size={32} strokeWidth={1.3} />
             <p className="eyebrow">THE NEXT CONNECTION STARTS WITH YOU</p>
@@ -441,7 +494,10 @@ export default function LandingPage({
           </a>
           <p>Connected by care. Powered by people.</p>
         </div>
-        <span>© {new Date().getFullYear()} PulseNode</span>
+        <div className="footer-authorship">
+          <CreatorCredit compact />
+          <span>© {new Date().getFullYear()} PulseNode</span>
+        </div>
         <button className="text-button" onClick={() => setShowAdminLogin(true)}>
           Admin access <ArrowUpRight size={14} />
         </button>
