@@ -1,7 +1,7 @@
 export default function NetworkIllustration() {
   return (
     <svg
-      className="network-illustration"
+      className="network-illustration motion-loop"
       viewBox="0 0 440 450"
       fill="none"
       aria-hidden="true"
@@ -12,8 +12,36 @@ export default function NetworkIllustration() {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <circle cx="212" cy="217" r="183" opacity=".16" strokeDasharray="3 9" />
+        <circle
+          className="orbital-grid motion-loop"
+          cx="212"
+          cy="217"
+          r="183"
+          opacity=".3"
+          strokeDasharray="3 9"
+        />
         <circle cx="212" cy="217" r="145" opacity=".13" />
+        <circle
+          className="orbital-signal motion-loop"
+          cx="212"
+          cy="217"
+          r="183"
+          pathLength="100"
+        />
+        <circle
+          className="orbital-signal orbital-signal-inner motion-loop"
+          cx="212"
+          cy="217"
+          r="145"
+          pathLength="100"
+        />
+        <circle className="radar-echo motion-loop" cx="212" cy="217" r="100" />
+        <circle
+          className="radar-echo radar-echo-delayed motion-loop"
+          cx="212"
+          cy="217"
+          r="100"
+        />
         <path
           d="M47 175v-62a20 20 0 0 1 20-20h99M321 99h39a20 20 0 0 1 20 20v91M349 308v59a20 20 0 0 1-20 20H175"
           opacity=".6"
@@ -40,7 +68,11 @@ export default function NetworkIllustration() {
           <path d="M44 172 11 211a5 5 0 0 0 4 8h308a5 5 0 0 0 4-8l-37-39M121 202h93M25 205h289" />
           <circle cx="167" cy="162" r="2" />
           <path
-            className="illustration-pulse"
+            d="M66 91h31l12-18 14 35 18-65 18 87 13-39h22l11-17 13 17h48"
+            opacity=".2"
+          />
+          <path
+            className="illustration-pulse motion-loop"
             pathLength="1"
             d="M66 91h31l12-18 14 35 18-65 18 87 13-39h22l11-17 13 17h48"
             strokeWidth="1.8"

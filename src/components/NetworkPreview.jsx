@@ -24,8 +24,10 @@ export default function NetworkPreview({ onJoin }) {
     <section
       className="network-preview page-width"
       data-reveal
+      data-motion-zone
       aria-label="Interactive network preview"
     >
+      <span className="preview-edge-trace motion-loop" aria-hidden="true" />
       <div className="preview-top">
         <div className="preview-identity">
           <span className="preview-logo">
