@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ArrowUpRight, Heart, LogOut, Menu, X } from "lucide-react";
 import Brand from "./components/Brand";
 import Modal from "./components/Modal";
-import CreatorCredit from "./components/CreatorCredit";
 
 const menus = {
   donor: [
@@ -101,9 +100,7 @@ export default function Navigation({
             : role === "requester"
               ? "YOUR CARE NETWORK"
               : "THE COMMUNITY AT A GLANCE"}
-        </span>
-        <CreatorCredit compact />
-      </div>
+        </span></div>
       {aboutOpen && (
         <Modal onClose={() => setAboutOpen(false)} titleId="about-title">
           <p className="eyebrow">THE POWER OF SHOWING UP</p>

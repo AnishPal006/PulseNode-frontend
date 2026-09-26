@@ -27,7 +27,6 @@ import ScrollShowcase from "./components/ScrollShowcase";
 import useScrollReveal from "./hooks/useScrollReveal";
 import useMotionExperience from "./hooks/useMotionExperience";
 import MotionBackdrop from "./components/MotionBackdrop";
-import CreatorCredit from "./components/CreatorCredit";
 
 const questions = [
   [
@@ -207,9 +206,7 @@ export default function LandingPage({
                 <a className="button button-ghost" href="#how-it-works">
                   Explore the network <ArrowRight size={18} />
                 </a>
-              </div>
-              <CreatorCredit />
-              <div className="hero-proof">
+              </div><div className="hero-proof">
                 <span>
                   <ShieldCheck size={15} /> Secure sign-in
                 </span>
@@ -487,9 +484,7 @@ export default function LandingPage({
           </a>
           <p>Connected by care. Powered by people.</p>
         </div>
-        <div className="footer-authorship">
-          <CreatorCredit compact />
-          <span>© {new Date().getFullYear()} PulseNode</span>
+        <div className="footer-authorship"><span>© {new Date().getFullYear()} PulseNode</span>
         </div>
         <button className="text-button" onClick={() => setShowAdminLogin(true)}>
           Admin access <ArrowUpRight size={14} />
